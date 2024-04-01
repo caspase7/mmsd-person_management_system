@@ -1,0 +1,24 @@
+Github:  https://github.com/caspase7/mmsd-person_management_system
+王艺翔：caspase7         827678643@qq.com
+秦兴路：fwnvnf            2157865791@qq.com
+赵进伟：snakemanzjw  2216604421@qq.com
+油天禄：youtianlu        1550681588@qq.com
+丁国清：Mitsuha210    1641619571@qq.com
+
+可行性报告分工：
+油天禄：
+	1引言	
+	2引用文件	
+王艺翔：
+	3可行性分析的前提	
+赵进伟：
+	4所建议的系统	
+秦兴路：
+	4.2数据流程和处理流程(画图)	
+丁国清:
+	5经济可行性
+	6技术可行性(技术风险评价)	
+	7法律可行性	
+	8用户使用可行性	
+
+、
