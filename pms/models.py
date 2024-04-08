@@ -6,6 +6,9 @@ class Department(models.Model):
     """部门表"""
     title = models.CharField(verbose_name="部门", max_length=32)
 
+    class Meta:
+        db_table = 'department'
+
 
 # 员工管理
 class UserInfo(models.Model):
@@ -34,17 +37,25 @@ class UserInfo(models.Model):
     }
     condition = models.SmallIntegerField(verbose_name="状态", choices=condition_choice)
 
+    class Meta:
+        db_table = 'person'
+
 
 class Rewards(models.Model):
-    uid = models.ForeignKey(UserInfo, to_field="id")
+    uid = models.ForeignKey(UserInfo, to_field="id", on_delete=models.CASCADE)
     reward = models.IntegerField(verbose_name="奖金")
     time = models.DateTimeField(verbose_name="时间")
 
+    class Meta:
+        db_table = 'rewards'
+
 
 class Punishments(models.Model):
-    uid = models.ForeignKey(UserInfo, to_field="id")
+    uid = models.ForeignKey(UserInfo, to_field="id", on_delete=models.CASCADE)
     punishment = models.IntegerField(verbose_name="罚款")
     time = models.DateTimeField(verbose_name="时间")
 
+    class Meta:
+        db_table = 'punishments'
 
 
