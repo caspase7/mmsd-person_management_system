@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'mmsd_person_management_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pmsdatabase',  # 数据库名字
         'USER': 'admin',
         'PASSWORD': '123456',
