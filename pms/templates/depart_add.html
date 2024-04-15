@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/plugins/bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href={% static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css' %}>
+
 </head>
 <body>
-
 <nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">人事管理系统</a>
@@ -60,46 +60,26 @@
 
     </div>
 </nav>
+
 <div>
     <div class="container">
-        <div style="margin-bottom: 10px">
-              <a class="btn btn-success" href="/depart/add/" target="_blank">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                新建部门
-            </a>
-        </div>
         <div class="panel panel-default">
-            <!-- Default panel contents -->
             <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                部门列表
+                <h3 class="panel-title">新建部门</h3>
             </div>
-
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>部门名称</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                 {% for obj in queryset %}
-                    <tr>
-                        <th>{{ obj.id }}</th>
-                        <td>{{ obj.title }}</td>
-                        <td>
-                            <a class="btn btn-primary btn-xs">新建</a>
-                            <a class="btn btn-danger btn-xs" href="/depart/delete/?nid={{ obj.id }}">删除</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-
-
-                </tbody>
-            </table>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" class="form-control" placeholder="标题" name="title">
+                    </div>
+               <button type="submit" class="btn btn-primary">保 存</button>
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
 
 
@@ -108,4 +88,3 @@
 
 </body>
 </html>
-
