@@ -1,19 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
-<div>
+   <div>
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">新建部门</h3>
+                <h3 class="panel-title">修改部门</h3>
             </div>
             <div class="panel-body">
                 <form method="post">
                     {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
                     <div class="form-group">
                         <label>标题</label>
-                        <input type="text" class="form-control" placeholder="标题" name="title">
+                        <input type="text" class="form-control" placeholder="标题" name="title" value="{{ row_object.title }}">
                     </div>
                <button type="submit" class="btn btn-primary">保 存</button>
                 </form>
@@ -22,5 +21,10 @@
     </div>
 
 </div>
-
 {% endblock %}
+
+
+
+
+
+

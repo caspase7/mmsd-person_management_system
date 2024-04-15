@@ -27,3 +27,20 @@ def depart_delete(request):
 
     # 重定向回到部门列表
     return redirect("/depart/list/")
+
+
+def depart_edit(request, nid):
+    """编辑部门"""
+    if request.method == "GET":
+        # 根据nid，获取他的数据
+        row_object = models.Department.objects.filter(id=nid).first()
+
+        return render(request, "depart_edit.html", {"row_object": row_object})
+
+    # 获取用户提交的标题并修改
+    title = request.POST.get("title")
+    models.Department.objects.filter(id=nid).update(title=title)
+
+    # 重定向回到部门列表
+    return redirect("/depart/list/")
+
