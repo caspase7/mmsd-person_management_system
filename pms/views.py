@@ -13,10 +13,10 @@ def login(request):
             user = models.UserInfo.objects.get(id=user_id, password=password)
 
             if user.limit == 0:
-
+                request.session['user_name'] = user.name
                 return redirect('/depart/list/')
             elif user.limit == 1:
-
+                request.session['user_name'] = user.name
                 return redirect('/depart/add/')
             else:
 
@@ -27,6 +27,12 @@ def login(request):
             return HttpResponse('Invalid ID or password')
 
     return render(request, 'login.html')
+
+
+def logout(request):
+    # 清除会话中的 user_name
+    request.session.pop('user_name', None)
+    return redirect('login')
 
 
 def depart_list(request):
