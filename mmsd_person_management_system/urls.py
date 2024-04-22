@@ -21,7 +21,7 @@ from pms import views
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('login', views.login),
+    path('login/', views.login, name='login'),
     path('depart/list/', views.depart_list),
     path('depart/add/', views.depart_add),
     path('depart/delete/', views.depart_delete),

@@ -13,7 +13,8 @@
     <div class="main">
         <hs1>人事管理系统</hs1>
         <h3>用户登录</h3>
-        <form action="">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
             <label for="id">
                   工号:
               </label>
@@ -24,14 +25,14 @@
 
             <label for="password">
                   密码:
-              </label>
+            </label>
             <input type="password"
                    id="password"
                    name="password"
                    placeholder="请输入密码" required>
 
             <div class="wrap">
-                <input type="submit" value="登录">
+                <input type="submit" value="Login">
             </div>
         </form>
 
