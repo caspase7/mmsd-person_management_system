@@ -1,6 +1,32 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from pms import models
 # Create your views here.
+
+
+def login(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')
+        password = request.POST.get('password')
+
+        try:
+            user = models.UserInfo.objects.get(id=user_id, password=password)
+
+            if user.limit == 0:
+
+                return redirect('/depart/list/')
+            elif user.limit == 1:
+
+                return redirect('/depart/add/')
+            else:
+
+                return HttpResponse('Invalid user limit')
+
+        except models.UserInfo.DoesNotExist:
+            # 如果用户不存在或密码不匹配，返回错误消息
+            return HttpResponse('Invalid ID or password')
+
+    return render(request, 'login.html')
 
 
 def depart_list(request):
