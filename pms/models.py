@@ -23,7 +23,7 @@ class UserInfo(models.Model):
     age = models.IntegerField(verbose_name="年龄")
     # 总长度是10，小数位是2, 默认值是0
     salary = models.DecimalField(verbose_name="基础工资", max_digits=10, decimal_places=2, default=0)
-    degree = models.CharField(verbose_name="学历",max_length=8)
+    degree = models.CharField(verbose_name="学历", max_length=8)
     marriage_choice = {
         (0, "未婚"), (1, "已婚")
     }
@@ -36,6 +36,10 @@ class UserInfo(models.Model):
         (0, "在职"), (1, "辞职"), (2, "辞退"), (3, "退休"), (4, "转出")
     }
     condition = models.SmallIntegerField(verbose_name="状态", choices=condition_choice)
+    limit_choice = {
+        (0, "admin"), (1, "user")
+    }
+    limit = models.SmallIntegerField(verbose_name="权限", choices=limit_choice, default=1)
 
     class Meta:
         db_table = 'person'
