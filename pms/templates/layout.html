@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-light ">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">人事管理系统</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -38,39 +38,25 @@
                     </ul>
                 </li>
             </ul>
-        </div>
 
-        <ul class="navbar-nav ms-auto">
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                <path d="M8 0a4 4 0 0 1 4 4c0 2-1.5 3-4 3s-4-1-4-3a4 4 0 0 1 4-4zm0 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm5 8a1 1 0 0 1-1-1c0-2.998-3-4-4-4s-4 1.002-4 4a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1c0-3.238 2.144-5 5-5h2c2.856 0 5 1.762 5 5a1 1 0 0 1-1 1z"/>
-            </svg>
-            注册
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
-                <path d="M4 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h3zM3 0h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1zm6 7V2h2v5a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-            </svg>
-            登录
-        </a>
-    </li>
-    </ul>
+        </div>
+        <ul class="navbar-nav ml-auto">  <!-- ml-auto 将其推到右侧 -->
+                {% if request.session.user_name %}
+                 <li class="nav-item">
+                    <a class="nav-link" href="#">{{ request.session.user_name }}</a>
+                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">登出</a>
+                </li>
+                {% endif %}
+            </ul>
+
 
     </div>
 </nav>
-<!---
-<div>
-    {% if request.session.user_name %}
-        <div style="position: absolute; top: 10px; right: 10px;">
-            Welcome, {{ request.session.user_name }}!
-        </div>
-    {% endif %}
+
         {% block content%}{% endblock %}
-</div>
---->
+
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-5.3.3-dist/js/bootstrap.js' %}"></script>
 
