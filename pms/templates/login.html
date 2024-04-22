@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="main">
+        <hs1>人事管理系统</hs1>
+        <h3>用户登录</h3>
+        <form action="">
+            <label for="id">
+                  工号:
+              </label>
+            <input type="text"
+                   id="id"
+                   name="id"
+                   placeholder="请输入工号" required>
+
+            <label for="password">
+                  密码:
+              </label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="请输入密码" required>
+
+            <div class="wrap">
+                <input type="submit" value="登录">
+            </div>
+        </form>
+
+    </div>
+</body>
+
+</html>
+
