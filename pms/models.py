@@ -29,10 +29,10 @@ class UserInfo(models.Model):
     marriage_choice = {
         (0, "未婚"), (1, "已婚")
     }
-    marriage = models.SmallIntegerField(verbose_name="性别", choices=marriage_choice, default=0, null=True, blank=True)
-    create_time = models.DateTimeField(verbose_name="入职时间", default=datetime.now)
+    marriage = models.SmallIntegerField(verbose_name="婚姻状况", choices=marriage_choice, default=0, null=True, blank=True)
+    create_time = models.DateField(verbose_name="入职时间")
     jobtitle = models.CharField(verbose_name="职称", max_length=8, null=True, blank=True)
-    depart = models.ForeignKey(to="Department", to_field="id", null=True, blank=True, on_delete=models.SET_NULL)
+    depart = models.ForeignKey(verbose_name="部门", to="Department", to_field="id", null=True, blank=True, on_delete=models.SET_NULL)
     post = models.CharField(verbose_name="岗位", max_length=16, null=True, blank=True)
     condition_choice = {
         (0, "在职"), (1, "辞职"), (2, "辞退"), (3, "退休"), (4, "转出")

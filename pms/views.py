@@ -14,7 +14,7 @@ def login(request):
 
             if user.limit == 0:
                 request.session['user_name'] = user.name
-                return redirect('/depart/list/')
+                return redirect('/user/list/')
             elif user.limit == 1:
                 request.session['user_name'] = user.name
                 return redirect('/depart/add/')
@@ -51,6 +51,7 @@ def depart_add(request):
     # 重定向回到部门列表
     return redirect("/depart/list/")
 
+
 def depart_delete(request):
 
     nid = request.GET.get('nid')
@@ -76,3 +77,81 @@ def depart_edit(request, nid):
     # 重定向回到部门列表
     return redirect("/depart/list/")
 
+
+# 用户管理
+def user_list(request):
+    """用户管理"""
+
+    # 获取所有的用户信息 [obj, obj ……]
+    # queryset = models.UserInfo.objects.all()
+    queryset = models.UserInfo.objects.filter(condition=0)
+    """
+    # 使用python的语法来获取
+    for obj in queryset:
+
+        print(obj.id, obj.name, obj.account, obj.create_time.strftime("%Y-%m-%d"))
+        # get_字段名_display()
+        print(obj.get_sex_display())
+        obj.depart_id  # 获取数据库中存储的那个字段值
+        obj.depart.title     # 根据id自动去关联表中id那一行的depart对象"""
+
+    return render(request, 'user_list.html', {'queryset': queryset})
+
+
+def user_add(request):
+    """添加部门"""
+    queryset = models.Department.objects.all()
+    if request.method == "GET":
+        return render(request, 'user_add.html', {'queryset': queryset})
+    # 获取用户POST传过来的数据(暂时不考虑为空的情况)
+    id = request.POST.get("id")
+    name = request.POST.get("name")
+    sex = request.POST.get("sex")
+    password = request.POST.get("password")
+    age = request.POST.get("age")
+    salary = request.POST.get("salary")
+    degree = request.POST.get("degree")
+    marriage = request.POST.get("marriage")
+    create_time = request.POST.get("create_time")
+    jobtitle = request.POST.get("jobtitle")
+    depart = request.POST.get("depart")
+    post = request.POST.get("post")
+    condition = request.POST.get("condition")
+    limit = request.POST.get("limit")
+
+    # 保存到数据库
+    models.UserInfo.objects.create(id=id, name=name, sex=sex, password=password, age=age, salary=salary,
+                                    degree=degree, marriage=marriage, create_time=create_time, jobtitle=jobtitle,
+                                    depart_id=depart, post=post, condition=condition, limit=limit)
+    # 重定向回到部门列表
+    return redirect("/user/list/")
+
+
+def user_edit(request, nid):
+    """编辑用户"""
+    if request.method == "GET":
+        # 根据nid，获取他的数据
+        row_object = models.UserInfo.objects.get(id=nid)
+
+        return render(request, "user_edit.html", {"row_object": row_object})
+
+    name = request.POST.get("name")
+    sex = request.POST.get("sex")
+    password = request.POST.get("password")
+    age = request.POST.get("age")
+    salary = request.POST.get("salary")
+    degree = request.POST.get("degree")
+    marriage = request.POST.get("marriage")
+    create_time = request.POST.get("create_time")
+    jobtitle = request.POST.get("jobtitle")
+    depart = request.POST.get("depart")
+    post = request.POST.get("post")
+    condition = request.POST.get("condition")
+    limit = request.POST.get("limit")
+    # 获取用户提交的标题并修改
+    models.UserInfo.objects.filter(id=nid).update(name=name, sex=sex, password=password, age=age, salary=salary,
+                                    degree=degree, marriage=marriage, create_time=create_time, jobtitle=jobtitle,
+                                    depart_id=depart, post=post, condition=condition, limit=limit)
+
+    # 重定向回到部门列表
+    return redirect("/user/list/")

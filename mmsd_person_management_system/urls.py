@@ -21,10 +21,14 @@ from pms import views
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('login/', views.login, name='login'),
+    path('', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('depart/list/', views.depart_list),
     path('depart/add/', views.depart_add),
     path('depart/delete/', views.depart_delete),
-    path('depart/<int:nid>/edit/', views.depart_edit)
+    path('depart/<int:nid>/edit/', views.depart_edit),
+    # 用户管理
+    path('user/list/', views.user_list),
+    path('user/add/', views.user_add),
+    path('user/<int:nid>/edit/', views.user_edit)
 ]

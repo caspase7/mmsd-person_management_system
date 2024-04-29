@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">新建用户</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    <div class="form-group">
+                        <label>工号</label>
+                        <input type="text" class="form-control" placeholder="工号" name="id">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="姓名" name="name">
+                        <label>性别:</label>
+                        <input type="radio" name="sex" value=0 checked>
+                        <label>男</label>
+                        <input type="radio" name="sex" value=1>
+                        <label>女</label>
+                        <br>
+                        <label>密码</label>
+                        <input type="text" class="form-control" placeholder="密码" name="password">
+                        <label>年龄</label>
+                        <input type="text" class="form-control" placeholder="年龄" name="age">
+                        <label>基础工资</label>
+                        <input type="text" class="form-control" placeholder="基础工资" name="salary">
+                        <label>学历</label>
+                        <input type="text" class="form-control" placeholder="学历" name="degree">
+                        <label>婚姻状况</label>
+                        <input type="radio" name="marriage" value=0 checked>
+                        <label>未婚</label>
+                        <input type="radio" name="marriage" value=1>
+                        <label>已婚</label>
+                        <br>
+                        <label>入职时间</label>
+                        <input type="date" name="create_time" value="2024-04-22" min="2000-01-01" max="2050-12-31" >
+                        <br>
+                        <label>职称</label>
+                        <input type="text" class="form-control" placeholder="职称" name="jobtitle">
+                        <label>部门</label>
+                        <select name="depart">
+                            {% for obj in queryset %}
+                            <option value='{{ obj.id }}'>{{ obj.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <label>岗位</label>
+                        <input type="text" class="form-control" placeholder="岗位" name="post">
+                        <label>状态</label>
+                        <select name="condition">
+                            <option value=0>在职</option>
+                            <option value=1>辞职</option>
+                            <option value=2>辞退</option>
+                            <option value=3>退休</option>
+                            <option value=4>转出</option>
+                        </select>
+                        <br>
+                        <label>权限</label>
+                        <input type="radio" name="limit" value=0>
+                        <label>管理员</label>
+                        <input type="radio" name="limit" value=1 checked>
+                        <label>用户</label>
+                        <br>
+                    </div>
+               <button type="submit" class="btn btn-primary">保 存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

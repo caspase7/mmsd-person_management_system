@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script>
+    function initradio(rName,rValue){
+        var rObj = document.getElementsByName(rName);
+        for(var i = 0;i < rObj.length;i++){
+            if(rObj[i].value == rValue){
+                rObj[i].checked =  'checked';
+            }
+        }
+    }
+    function initselect(rName,rValue){
+        let options = document.getElementsByName(rName).options;
+        for(let i = 0;i<options.length;i++){
+	        if(options[i].value==rValue){
+                options[i].selected = true;
+            }
+        }
+    }
+</script>
+   <div>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">修改用户信息</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    <div class="form-group">
+                        <label>工号</label>
+                        <input type="text" disabled="disabled" class="form-control" placeholder="工号" name="id" value="{{ row_object.id }}">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
+                        <label>性别:</label>
+                        <input type="radio" name="sex" value=0>
+                        <label>男</label>
+                        <input type="radio" name="sex" value=1>
+                        <label>女</label>
+                        <br>
+                            <script>
+                                initradio('sex','{{row_object.sex}}');
+                            </script>
+                        <label>密码</label>
+                        <input type="text" class="form-control" placeholder="密码" name="password" value="{{ row_object.password }}">
+                        <label>年龄</label>
+                        <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
+                        <label>基础工资</label>
+                        <input type="text" class="form-control" placeholder="基础工资" name="salary" value="{{ row_object.salary }}">
+                        <label>学历</label>
+                        <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
+                        <label>婚姻状况</label>
+                        <input type="radio" name="marriage" value=0>
+                        <label>未婚</label>
+                        <input type="radio" name="marriage" value=1>
+                        <label>已婚</label>
+                        <br>
+                            <script>
+                                initradio('marriage','{{row_object.marriage}}');
+                            </script>
+                        <label>入职时间</label>
+                        <input type="date" id="Date" name="create_time" min="2000-01-01" max="2050-12-31" value="{{ row_object.create_time }}">
+                        <br>
+                        <label>职称</label>
+                        <input type="text" class="form-control" placeholder="职称" name="jobtitle" value="{{ row_object.jobtitle }}">
+                        <label>部门</label>
+                        <select name="depart">
+                            {% for obj in queryset %}
+                            <option value='{{ obj.id }}'>{{ obj.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                            <script>
+                                initselect('depart','{{row_object.depart.id}}');
+                            </script>
+                        <label>岗位</label>
+                        <input type="text" class="form-control" placeholder="岗位" name="post" value="{{ row_object.post }}">
+                        <label>状态</label>
+                        <select name="condition">
+                            <option value=0>在职</option>
+                            <option value=1>辞职</option>
+                            <option value=2>辞退</option>
+                            <option value=3>退休</option>
+                            <option value=4>转出</option>
+                        </select>
+                        <br>
+                            <script>
+                                initselect('condition','{{row_object.condition}}');
+                            </script>
+                        <label>权限</label>
+                        <input type="radio" name="limit" value=0 >
+                        <label>管理员</label>
+                        <input type="radio" name="limit" value=1 >
+                        <label>用户</label>
+                        <br>
+                            <script>
+                                initradio('limit','{{row_object.limit}}');
+                            </script>
+                    </div>
+               <button type="submit" class="btn btn-primary">保 存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
