@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from pms import models
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 # Create your views here.
 
 
@@ -14,9 +19,11 @@ def login(request):
 
             if user.limit == 0:
                 request.session['user_name'] = user.name
+                request.session['user_id'] = user.id
                 return redirect('/user/list/')
             elif user.limit == 1:
                 request.session['user_name'] = user.name
+                request.session['user_id'] = user.id
                 return redirect('/depart/add/')
             else:
 
@@ -32,6 +39,7 @@ def login(request):
 def logout(request):
     # 清除会话中的 user_name
     request.session.pop('user_name', None)
+    request.session.pop('user_id', None)
     return redirect('login')
 
 
@@ -155,3 +163,29 @@ def user_edit(request, nid):
 
     # 重定向回到部门列表
     return redirect("/user/list/")
+
+
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        try:
+            user = models.UserInfo.objects.get(id=request.session['user_id'])
+            if user.password == current_password:
+                if new_password == confirm_password:
+                    # 更新用户的新密码
+
+                    user.password = new_password
+                    user.save()  # 保存更改
+
+                    return redirect('/user/list/')
+                else:
+                    return HttpResponse('新密码与确认密码不匹配！')
+            else:
+                return HttpResponse('原密码输入错误！')
+        except models.UserInfo.DoesNotExist:
+            return HttpResponse('用户不存在！')
+
+    return render(request, 'change_password.html')
