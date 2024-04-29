@@ -43,7 +43,7 @@
                                 initradio('sex','{{row_object.sex}}');
                             </script>
                         <label>密码</label>
-                        <input type="text" class="form-control" placeholder="密码" name="password" value="{{ row_object.password }}">
+                        <input type="text" disabled="disabled" class="form-control" placeholder="密码" name="password" value="{{ row_object.password }}">
                         <label>年龄</label>
                         <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
                         <label>基础工资</label>
@@ -89,9 +89,9 @@
                                 initselect('condition','{{row_object.condition}}');
                             </script>
                         <label>权限</label>
-                        <input type="radio" name="limit" value=0 >
+                        <input type="radio" disabled="disabled" name="limit" value=0 >
                         <label>管理员</label>
-                        <input type="radio" name="limit" value=1 >
+                        <input type="radio" disabled="disabled" name="limit" value=1 >
                         <label>用户</label>
                         <br>
                             <script>
