@@ -11,10 +11,10 @@
         }
     }
     function initselect(rName,rValue){
-        let options = document.getElementsByName(rName).options;
-        for(let i = 0;i<options.length;i++){
-	        if(options[i].value==rValue){
-                options[i].selected = true;
+        var tesObj = document.getElementById(rName);
+        for(var i=0; i<tesObj.length; i++){
+            if(tesObj.options[i].value == rValue){
+                tesObj.options[i].selected = true;
             }
         }
     }
@@ -60,12 +60,12 @@
                                 initradio('marriage','{{row_object.marriage}}');
                             </script>
                         <label>入职时间</label>
-                        <input type="date" id="Date" name="create_time" min="2000-01-01" max="2050-12-31" value="{{ row_object.create_time }}">
+                        <input type="date" id="Date" name="create_time" min="2000-01-01" max="2050-12-31" value="{{ ctime }}">
                         <br>
                         <label>职称</label>
                         <input type="text" class="form-control" placeholder="职称" name="jobtitle" value="{{ row_object.jobtitle }}">
                         <label>部门</label>
-                        <select name="depart">
+                        <select id="depart" name="depart">
                             {% for obj in queryset %}
                             <option value='{{ obj.id }}'>{{ obj.title }}</option>
                             {% endfor %}
@@ -77,7 +77,7 @@
                         <label>岗位</label>
                         <input type="text" class="form-control" placeholder="岗位" name="post" value="{{ row_object.post }}">
                         <label>状态</label>
-                        <select name="condition">
+                        <select id="condition" name="condition">
                             <option value=0>在职</option>
                             <option value=1>辞职</option>
                             <option value=2>辞退</option>

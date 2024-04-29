@@ -131,9 +131,10 @@ def user_edit(request, nid):
     """编辑用户"""
     if request.method == "GET":
         # 根据nid，获取他的数据
+        queryset = models.Department.objects.all()
         row_object = models.UserInfo.objects.get(id=nid)
-
-        return render(request, "user_edit.html", {"row_object": row_object})
+        ctime = row_object.create_time.strftime("%Y-%m-%d")
+        return render(request, "user_edit.html", locals())
 
     name = request.POST.get("name")
     sex = request.POST.get("sex")
@@ -155,3 +156,23 @@ def user_edit(request, nid):
 
     # 重定向回到部门列表
     return redirect("/user/list/")
+
+
+def user_list_all(request):
+    """用户管理"""
+
+    # 获取所有的用户信息 [obj, obj ……]
+    # queryset = models.UserInfo.objects.all()
+    queryset = models.UserInfo.objects.all()
+    """
+    # 使用python的语法来获取
+    for obj in queryset:
+
+        print(obj.id, obj.name, obj.account, obj.create_time.strftime("%Y-%m-%d"))
+        # get_字段名_display()
+        print(obj.get_sex_display())
+        obj.depart_id  # 获取数据库中存储的那个字段值
+        obj.depart.title     # 根据id自动去关联表中id那一行的depart对象"""
+
+    return render(request, 'user_list_all.html', {'queryset': queryset})
+
