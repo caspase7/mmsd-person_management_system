@@ -24,7 +24,7 @@ def login(request):
             elif user.limit == 1:
                 request.session['user_name'] = user.name
                 request.session['user_id'] = user.id
-                return redirect('/depart/add/')
+                return redirect('/user/info/')
             else:
 
                 return HttpResponse('Invalid user limit')
@@ -93,15 +93,7 @@ def user_list(request):
     # 获取所有的用户信息 [obj, obj ……]
     # queryset = models.UserInfo.objects.all()
     queryset = models.UserInfo.objects.filter(condition=0)
-    """
-    # 使用python的语法来获取
-    for obj in queryset:
 
-        print(obj.id, obj.name, obj.account, obj.create_time.strftime("%Y-%m-%d"))
-        # get_字段名_display()
-        print(obj.get_sex_display())
-        obj.depart_id  # 获取数据库中存储的那个字段值
-        obj.depart.title     # 根据id自动去关联表中id那一行的depart对象"""
 
     return render(request, 'user_list.html', {'queryset': queryset})
 
@@ -210,3 +202,32 @@ def change_password(request):
             return HttpResponse('用户不存在！')
 
     return render(request, 'change_password.html')
+
+def user_info(request):
+    """个人信息"""
+
+    queryset = models.UserInfo.objects.filter(id=request.session['user_id'])
+
+
+    return render(request, 'user_info.html', {'queryset': queryset})
+
+
+def user_info_edit(request):
+    """编辑个人信息"""
+    if request.method == "GET":
+        # 根据nid，获取他的数据
+        queryset = models.Department.objects.all()
+        row_object = models.UserInfo.objects.get(id=request.session['user_id'])
+        ctime = row_object.create_time.strftime("%Y-%m-%d")
+        return render(request, "user_info_edit.html", locals())
+
+    name = request.POST.get("name")
+    sex = request.POST.get("sex")
+    age = request.POST.get("age")
+    degree = request.POST.get("degree")
+    marriage = request.POST.get("marriage")
+
+    # 获取用户提交的标题并修改
+    models.UserInfo.objects.filter(id=request.session['user_id']).update(name=name, sex=sex, age=age,degree=degree, marriage=marriage)
+
+    return redirect("/user/info/")

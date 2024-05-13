@@ -1,0 +1,73 @@
+{% extends 'user_layout.html' %}
+
+{% block content %}
+<script>
+    function initradio(rName,rValue){
+        var rObj = document.getElementsByName(rName);
+        for(var i = 0;i < rObj.length;i++){
+            if(rObj[i].value == rValue){
+                rObj[i].checked =  'checked';
+            }
+        }
+    }
+    function initselect(rName,rValue){
+        var tesObj = document.getElementById(rName);
+        for(var i=0; i<tesObj.length; i++){
+            if(tesObj.options[i].value == rValue){
+                tesObj.options[i].selected = true;
+            }
+        }
+    }
+</script>
+   <div>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">修改个人信息</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
+                        <label>性别:</label>
+                        <input type="radio" name="sex" value=0>
+                        <label>男</label>
+                        <input type="radio" name="sex" value=1>
+                        <label>女</label>
+                        <br>
+                            <script>
+                                initradio('sex','{{row_object.sex}}');
+                            </script>
+                        <label>年龄</label>
+                        <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
+                        <br>
+                        <label>学历</label>
+                        <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
+                        <label>婚姻状况</label>
+                        <input type="radio" name="marriage" value=0>
+                        <label>未婚</label>
+                        <input type="radio" name="marriage" value=1>
+                        <label>已婚</label>
+                        <br>
+                            <script>
+                                initradio('marriage','{{row_object.marriage}}');
+                            </script>
+                        <br>
+
+                    </div>
+               <button type="submit" class="btn btn-primary">保 存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+

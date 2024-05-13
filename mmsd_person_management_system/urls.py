@@ -26,11 +26,13 @@ urlpatterns = [
     path('depart/list/', views.depart_list),
     path('depart/add/', views.depart_add),
     path('depart/delete/', views.depart_delete),
-    path('depart/<int:nid>/edit/', views.depart_edit),
+    path('depart/<str:nid>/edit/', views.depart_edit),
     # 用户管理
     path('user/list/', views.user_list),
     path('user/add/', views.user_add),
     path('user/list/all/', views.user_list_all),
-    path('user/<int:nid>/edit/', views.user_edit),
-    path('change_password/', views.change_password, name='change_password')
+    path('user/<str:nid>/edit/', views.user_edit),
+    path('change_password/', views.change_password, name='change_password'),
+    path('user/info/', views.user_info),
+    path('userinfo/edit/', views.user_info_edit)
 ]
