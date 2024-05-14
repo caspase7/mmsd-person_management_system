@@ -3,46 +3,51 @@
 {% block content %}
 <div>
     <div class="container">
-        <div style="margin-bottom: 10px">
-              <a class="btn btn-success" href="/depart/add/" target="_blank">
+        <div class="panel panel-default" style="position: relative;">
+            <!-- 默认面板内容 -->
+            <div class="panel-heading text-center">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                <div class="department-heading">部门列表</div>
+            </div>
+            <a class="btn btn-success" href="/depart/add/" target="_blank" style="position: absolute; top: 40px; right: 200px;">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                 新建部门
             </a>
-        </div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                部门列表
-            </div>
-
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="margin-top: 50px; width: 70%; margin-left: auto; margin-right: auto; text-align: center;">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>部门名称</th>
-                    <th>操作</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>部门名称</th>
+                        <th>操作</th>
+                    </tr>
                 </thead>
                 <tbody>
-                 {% for obj in queryset %}
+                    {% for obj in queryset %}
                     <tr>
-                        <th>{{ obj.id }}</th>
+                        <td>{{ obj.id }}</td>
                         <td>{{ obj.title }}</td>
                         <td>
                             <a class="btn btn-primary btn-xs" href="/depart/{{ obj.id }}/edit/">编辑</a>
                             <a class="btn btn-danger btn-xs" href="/depart/delete/?nid={{ obj.id }}">删除</a>
                         </td>
                     </tr>
-                {% endfor %}
-
-
+                    {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="right-column" style="width: 30%; float: right;">
+            <!-- 右边内容 -->
         </div>
     </div>
 </div>
 
+<style>
+    .department-heading {
+        font-size: 27px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: 15px;
+    }
+</style>
 
 {% endblock %}
-
