@@ -2,76 +2,232 @@
 
 {% block content %}
 
-<div>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">新建用户</h3>
-            </div>
-            <div class="panel-body">
-                <form method="post">
-                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
-                    <div class="form-group">
-                        <label>工号</label>
-                        <input type="text" class="form-control" placeholder="工号" name="id">
-                        <label>姓名</label>
-                        <input type="text" class="form-control" placeholder="姓名" name="name">
-                        <label>性别:</label>
-                        <input type="radio" name="sex" value=0 checked>
-                        <label>男</label>
-                        <input type="radio" name="sex" value=1>
-                        <label>女</label>
-                        <br>
-                        <label>密码</label>
-                        <input type="text" class="form-control" placeholder="密码" name="password">
-                        <label>年龄</label>
-                        <input type="text" class="form-control" placeholder="年龄" name="age">
-                        <label>基础工资</label>
-                        <input type="text" class="form-control" placeholder="基础工资" name="salary">
-                        <label>学历</label>
-                        <input type="text" class="form-control" placeholder="学历" name="degree">
-                        <label>婚姻状况</label>
-                        <input type="radio" name="marriage" value=0 checked>
-                        <label>未婚</label>
-                        <input type="radio" name="marriage" value=1>
-                        <label>已婚</label>
-                        <br>
-                        <label>入职时间</label>
-                        <input type="date" name="create_time" value="2024-04-22" min="2000-01-01" max="2050-12-31" >
-                        <br>
-                        <label>职称</label>
-                        <input type="text" class="form-control" placeholder="职称" name="jobtitle">
-                        <label>部门</label>
-                        <select name="depart">
-                            {% for obj in queryset %}
-                            <option value='{{ obj.id }}'>{{ obj.title }}</option>
-                            {% endfor %}
-                        </select>
-                        <br>
-                        <label>岗位</label>
-                        <input type="text" class="form-control" placeholder="岗位" name="post">
-                        <label>状态</label>
-                        <select name="condition">
-                            <option value=0>在职</option>
-                            <option value=1>辞职</option>
-                            <option value=2>辞退</option>
-                            <option value=3>退休</option>
-                            <option value=4>转出</option>
-                        </select>
-                        <br>
-                        <label>权限</label>
-                        <input type="radio" name="limit" value=0>
-                        <label>管理员</label>
-                        <input type="radio" name="limit" value=1 checked>
-                        <label>用户</label>
-                        <br>
+<meta charset="UTF-8">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, skyblue, lightgreen); /* 设置背景渐变 */
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff; /* 改为白色背景，确保内容可读性 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .panel {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .panel-primary {
+        border-color: #337ab7;
+    }
+    .panel-heading {
+        background-color: #337ab7;
+        color: #fff;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+    .panel-title {
+        margin: 0;
+        font-size: 18px;
+    }
+    .panel-body {
+        padding: 15px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+    .form-control:focus {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+    .btn-primary:hover {
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    input[type="text"] {
+    border: 2px solid #000000; /* 设置输入框的边框 */
+    border-radius: 10px; /* 设置输入框的圆角 */
+    padding: 6px; /* 设置输入框的内边距 */
+}
+
+input[type="text"]:hover {
+    border-color:#4CAF50; /* 设置输入框悬停时的边框颜色 */
+}
+select {
+            width: 90%; /* 设置宽度 */
+            padding: 10px; /* 内边距 */
+            border: 1px solid #ccc; /* 边框 */
+            border-radius: 4px; /* 圆角 */
+            background-color: #fff; /* 背景颜色 */
+            font-size: 16px; /* 字体大小 */
+            color: #333; /* 字体颜色 */
+            -webkit-appearance: none; /* 移除默认样式 (WebKit) */
+            -moz-appearance: none; /* 移除默认样式 (Mozilla) */
+            appearance: none; /* 移除默认样式 */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 viewBox%3D%270 0 4 5%27%3E%3Cpath fill%3D%27%23000%27 d%3D%27M2 0L0 2h4zM2 5L0 3h4z%27/%3E%3C/svg%3E'), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Arrow_down_font_awesome.svg/1024px-Arrow_down_font_awesome.svg.png'); /* 自定义箭头 */
+            background-repeat: no-repeat, no-repeat; /* 不重复背景图片 */
+            background-position: right 10px top 50%, right 10px top 50%; /* 调整背景图片位置 */
+            background-size: 10px 10px, 20px 20px; /* 调整背景图片大小 */
+            padding-right: 30px; /* 调整右内边距，以便给箭头留出空间 */
+        }
+
+        /* 样式修改 */
+        select:focus {
+            border-color: #66afe9; /* 聚焦时边框颜色 */
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.6); /* 聚焦时阴影 */
+            outline: none; /* 移除默认聚焦样式 */
+        }
+</style>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">新建用户</h3>
+        </div>
+        <div class="panel-body">
+            <form method="post">
+                {% csrf_token %}<!--使用post方法必须要写这个，不然报错403-->
+                <div class="form-group">
+                    <label for="id">工号</label>
+                    <input type="text" id="id" class="form-control" placeholder="工号" name="id">
+                </div>
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" class="form-control" placeholder="姓名" name="name">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <div>
+                        <input type="radio" id="male" name="sex" value="0" checked>
+                        <label for="male">男</label>
+                        <input type="radio" id="female" name="sex" value="1">
+                        <label for="female">女</label>
                     </div>
-               <button type="submit" class="btn btn-primary">保 存</button>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="text" id="password" class="form-control" placeholder="密码" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="age">年龄</label>
+                    <input type="text" id="age" class="form-control" placeholder="年龄" name="age">
+                </div>
+                <div class="form-group">
+                    <label for="salary">基础工资</label>
+                    <input type="text" id="salary" class="form-control" placeholder="基础工资" name="salary">
+                </div>
+                <div class="form-group">
+                    <label for="education">学历</label>
+                    <select id="education" class="form-control" name="depart">
+                        <option value="0">小学</option>
+                        <option value="1">初中</option>
+                        <option value="2">高中</option>
+                        <option value="3">本科</option>
+                        <option value="4">研究生及以上</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>婚姻状况</label>
+                    <div>
+                        <input type="radio" id="single" name="marriage" value="0" checked>
+                        <label for="single">未婚</label>
+                        <input type="radio" id="married" name="marriage" value="1">
+                        <label for="married">已婚</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="create_time">入职时间</label>
+                    <input type="date" id="create_time" class="form-control" name="create_time" value="2024-04-22" min="2000-01-01" max="2050-12-31">
+                </div>
+                <div class="form-group">
+                    <label for="jobtitle">职称</label>
+                    <input type="text" id="jobtitle" class="form-control" placeholder="职称" name="jobtitle">
+                </div>
+                <div class="form-group">
+                    <label for="department">部门</label>
+                    <select id="department" class="form-control" name="depart">
+                        <option value="0">教育部</option>
+                        <option value="1">国防部</option>
+                        <option value="2">外交部</option>
+                        <option value="3">公安部</option>
+                        <option value="4">司法部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="post">岗位</label>
+                    <input type="text" id="post" class="form-control" placeholder="岗位" name="post">
+                </div>
+                <div class="form-group">
+                    <label for="condition">状态</label>
+                    <select id="condition" class="form-control" name="condition">
+                        <option value="0">在职</option>
+                        <option value="1">辞职</option>
+                        <option value="2">辞退</option>
+                        <option value="3">退休</option>
+                        <option value="4">转出</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>权限</label>
+                    <div>
+                        <input type="radio" id="admin" name="limit" value="0">
+                        <label for="admin">管理员</label>
+                        <input type="radio" id="user" name="limit" value="1" checked>
+                        <label for="user">用户</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">保 存</button>
+            </form>
         </div>
     </div>
-
 </div>
 
 {% endblock %}

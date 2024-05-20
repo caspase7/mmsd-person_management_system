@@ -1,72 +1,132 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<meta charset="UTF-8">
+<style>
+    /* 自定义 CSS 样式开始 */
 
-    <div class="container">
-        <div style="margin-bottom: 10px">
-            <!--跳转并打开新页面-->
-            <a class="btn btn-success" href="/user/add/" target="_blank">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                新建用户
-            </a>
-            <a class="btn btn-primary btn-info" href="/user/list/all/">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                显示所有员工
-            </a>
-        </div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                用户列表
-            </div>
+    /* 添加背景图片 */
+    body {
+        background-image: url("https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014_640.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>工号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>密码</th>
-                    <th>年龄</th>
-                    <th>基础工资</th>
-                    <th>学历</th>
-                    <th>婚姻状况</th>
-                    <th>入职时间</th>
-                    <th>职称</th>
-                    <th>部门</th>
-                    <th>岗位</th>
-                    <th>状态</th>
-                    <th>操作</th>
+    /* 调整按钮样式 */
+    .btn {
+        margin-right: 10px; /* 调整按钮之间的间距 */
 
-                </tr>
-                </thead>
-                <tbody>
-                {% for obj in queryset %}
-                <tr>
-                    <th>{{ obj.id }}</th>
-                    <td>{{ obj.name }}</td>
-                    <td>{{ obj.get_sex_display}}</td>
-                    <td>{{ obj.password }}</td>
-                    <td>{{ obj.age }}</td>
-                    <td>{{ obj.salary }}</td>
-                    <td>{{ obj.degree }}</td>
-                    <td>{{ obj.get_marriage_display }}</td>
-                    <td>{{ obj.create_time|date:"Y-m-d" }}</td>
-                    <td>{{ obj.jobtitle }}</td>
-                    <td>{{ obj.depart.title }}</td>
-                    <td>{{ obj.post }}</td>
-                    <td>{{ obj.get_condition_display}}</td>
-                    <td>
-                        <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit/">编辑</a>
-                    <!--    <a class="btn btn-danger btn-xs" href="#">删除</a> -->
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    }
+
+    /* 修改面板标题样式 */
+    .panel-heading {
+         display: inline-block;
+        background-color: #f9a825; /* 修改背景颜色为暖黄色 */
+        color: #fff; /* 修改文字颜色 */
+        padding: 15px 20px; /* 调整内边距 */
+        border-radius: 10px 10px 0 0; /* 添加上边框圆角 */
+        text-align: center; /* 文字居中 */
+    }
+
+    /* 修改表格样式 */
+    .table {
+        background-color: rgba(255, 255, 255, 0.8); /* 设置半透明的白色背景 */
+    }
+
+    /* 添加表格边框 */
+    .table-bordered td,
+    .table-bordered th {
+        border: 1px solid #ddd; /* 添加表格边框 */
+    }
+
+    container{
+        font-family: 微软正黑体;
+    }
+
+     .custom-btn {
+        background-color: orange;
+        padding: 10px 20px; /* 调整内边距以适应边框 */
+        border-radius: 10px; /* 添加圆角边框 */
+        text-decoration: none; /* 去掉链接下划线 */
+         color:white;
+         font-size:18px;
+    }
+
+    .custom-btn:hover {
+        background-color: greenyellow; /* 悬停时的背景颜色 */
+        border-color: #45a049; /* 悬停时的边框颜色 */
+        color:lightskyblue;
+    }
+
+    /* 自定义 CSS 样式结束 */
+</style>
+
+<div class="container">
+    <div style="margin-bottom: 100px">
+        <!--跳转并打开新页面-->
+        <br> </br>
+        <a class="btn btn-success custom-btn" href="user_add.html" target="_blank">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            新建用户
+        </a>
+        <a class="btn btn-primary btn-info custom-btn" href="user_list_all.html">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            显示所有员工
+        </a>
     </div>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            <strong>用户列表</strong>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>工号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>密码</th>
+                <th>年龄</th>
+                <th>基础工资</th>
+                <th>学历</th>
+                <th>婚姻状况</th>
+                <th>入职时间</th>
+                <th>职称</th>
+                <th>部门</th>
+                <th>岗位</th>
+                <th>状态</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in queryset %}
+            <tr>
+                <td>{{ obj.id }}</td>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.get_sex_display}}</td>
+                <td>{{ obj.password }}</td>
+                <td>{{ obj.age }}</td>
+                <td>{{ obj.salary }}</td>
+                <td>{{ obj.degree }}</td>
+                <td>{{ obj.get_marriage_display }}</td>
+                <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                <td>{{ obj.jobtitle }}</td>
+                <td>{{ obj.depart.title }}</td>
+                <td>{{ obj.post }}</td>
+                <td>{{ obj.get_condition_display}}</td>
+                <td>
+                    <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit/">编辑</a>
+                <!--    <a class="btn btn-danger btn-xs" href="#">删除</a> -->
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
-

@@ -1,25 +1,108 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<script>
-    function initradio(rName,rValue){
-        var rObj = document.getElementsByName(rName);
-        for(var i = 0;i < rObj.length;i++){
-            if(rObj[i].value == rValue){
-                rObj[i].checked =  'checked';
-            }
-        }
+<!-- 在这里添加自定义 CSS 样式 -->
+<meta charset="UTF-8">
+<style>
+    /* 自定义 CSS 样式开始 */
+
+    /* 修改背景样式 */
+    body {
+        background: linear-gradient(to bottom, skyblue, lightgreen); /* 设置背景渐变 */
+        margin: 0;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        line-height: 1.6; /* 调整全局行间距 */
     }
-    function initselect(rName,rValue){
-        var tesObj = document.getElementById(rName);
-        for(var i=0; i<tesObj.length; i++){
-            if(tesObj.options[i].value == rValue){
-                tesObj.options[i].selected = true;
-            }
-        }
+
+    /* 修改面板标题样式 */
+    .panel-heading {
+        background-color: #337ab7; /* 修改背景颜色 */
+        color: #fff; /* 修改文字颜色 */
+        padding: 15px 20px; /* 调整内边距 */
+        border-radius: 5px 5px 0 0; /* 添加上边框圆角 */
     }
-</script>
-   <div>
+
+    /* 修改表单组样式 */
+    .form-group {
+        margin-bottom: 20px; /* 调整下边距 */
+        line-height: 1.8; /* 调整表单组的行间距 */
+    }
+
+    /* 修改输入框样式 */
+    .form-control {
+        border-radius: 3px; /* 添加圆角 */
+        margin-bottom: 10px; /* 增加输入框之间的间距 */
+    }
+
+    /* 修改单选框和复选框样式 */
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-right: 5px; /* 调整右边距 */
+        margin-bottom: 10px; /* 增加单选框和复选框之间的间距 */
+    }
+
+    /* 修改按钮样式 */
+    .btn-primary {
+        background-color: #337ab7; /* 修改背景颜色 */
+        border-color: #337ab7; /* 修改边框颜色 */
+        padding: 10px 20px; /* 调整内边距 */
+        font-size: 16px; /* 修改字体大小 */
+    }
+
+    .btn-primary:hover {
+        background-color: #286090; /* 修改悬停背景颜色 */
+        border-color: #286090; /* 修改悬停边框颜色 */
+    }
+
+    /* 容器样式 */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #fff; /* 确保内容可读性 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        line-height: 1.8; /* 调整容器内内容的行间距 */
+    }
+input[type="text"] {
+    border: 2px solid #000000; /* 设置输入框的边框 */
+    border-radius: 10px; /* 设置输入框的圆角 */
+    padding: 6px; /* 设置输入框的内边距 */
+}
+
+input[type="text"]:hover {
+    border-color:#4CAF50; /* 设置输入框悬停时的边框颜色 */
+}
+    /* 自定义 CSS 样式结束 */
+    select {
+            width: 100%; /* 设置宽度 */
+            padding: 10px; /* 内边距 */
+            border: 1px solid #ccc; /* 边框 */
+            border-radius: 4px; /* 圆角 */
+            background-color: #fff; /* 背景颜色 */
+            font-size: 16px; /* 字体大小 */
+            color: #333; /* 字体颜色 */
+            -webkit-appearance: none; /* 移除默认样式 (WebKit) */
+            -moz-appearance: none; /* 移除默认样式 (Mozilla) */
+            appearance: none; /* 移除默认样式 */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 viewBox%3D%270 0 4 5%27%3E%3Cpath fill%3D%27%23000%27 d%3D%27M2 0L0 2h4zM2 5L0 3h4z%27/%3E%3C/svg%3E'); /* 自定义箭头 */
+            background-repeat: no-repeat; /* 不重复背景图片 */
+            background-position: right 10px top 50%; /* 调整背景图片位置 */
+            background-size: 10px 10px; /* 调整背景图片大小 */
+        }
+
+        /* 样式修改 */
+        select:focus {
+            border-color: #66afe9; /* 聚焦时边框颜色 */
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.6); /* 聚焦时阴影 */
+            outline: none; /* 移除默认聚焦样式 */
+        }
+</style>
+
+<!-- 原有内容保持不变 -->
+<div>
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -27,13 +110,14 @@
             </div>
             <div class="panel-body">
                 <form method="post">
-                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    {% csrf_token %}
                     <div class="form-group">
+                        <!-- 输入框、单选框等表单项 -->
                         <label>工号</label>
                         <input type="text" disabled="disabled" class="form-control" placeholder="工号" name="id" value="{{ row_object.id }}">
                         <label>姓名</label>
                         <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
-                        <label>性别:</label>
+                        <label><br>性别:</br></label>
                         <input type="radio" name="sex" value=0>
                         <label>男</label>
                         <input type="radio" name="sex" value=1>
@@ -46,11 +130,11 @@
                         <input type="text" disabled="disabled" class="form-control" placeholder="密码" name="password" value="{{ row_object.password }}">
                         <label>年龄</label>
                         <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
-                        <label>基础工资</label>
+                        <label><br>基础工资</br></label>
                         <input type="text" class="form-control" placeholder="基础工资" name="salary" value="{{ row_object.salary }}">
-                        <label>学历</label>
+                        <label><br>学历</br></label>
                         <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
-                        <label>婚姻状况</label>
+                        <label><br>婚姻状况</br></label>
                         <input type="radio" name="marriage" value=0>
                         <label>未婚</label>
                         <input type="radio" name="marriage" value=1>
@@ -64,7 +148,7 @@
                         <br>
                         <label>职称</label>
                         <input type="text" class="form-control" placeholder="职称" name="jobtitle" value="{{ row_object.jobtitle }}">
-                        <label>部门</label>
+                        <label><br>部门</br></label>
                         <select id="depart" name="depart">
                             {% for obj in queryset %}
                             <option value='{{ obj.id }}'>{{ obj.title }}</option>
@@ -76,7 +160,7 @@
                             </script>
                         <label>岗位</label>
                         <input type="text" class="form-control" placeholder="岗位" name="post" value="{{ row_object.post }}">
-                        <label>状态</label>
+                        <label><br>状态</br></label>
                         <select id="condition" name="condition">
                             <option value=0>在职</option>
                             <option value=1>辞职</option>
@@ -98,17 +182,10 @@
                                 initradio('limit','{{row_object.limit}}');
                             </script>
                     </div>
-               <button type="submit" class="btn btn-primary">保 存</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}
-
-
-
-
-
-

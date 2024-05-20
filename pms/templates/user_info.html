@@ -1,54 +1,99 @@
 {% extends 'user_layout.html' %}
 
 {% block content %}
+<meta charset="UTF-8">
+<style>
+    .container {
+        padding: 20px;
+    }
 
-    <div class="container">
+    .panel-heading {
+        background-color: #337ab7;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+    }
 
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                用户列表
-            </div>
+    .btn-primary {
+        background-color: #337ab7;
+        border-color: #337ab7;
+    }
+
+    .btn-primary:hover {
+        background-color: #286090;
+        border-color: #286090;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            <h1><b>用户列表</b></h1>
             <a class="btn btn-primary btn-xs" href="/userinfo/edit/">编辑</a>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>工号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>年龄</th>
-                    <th>基础工资</th>
-                    <th>学历</th>
-                    <th>婚姻状况</th>
-                    <th>入职时间</th>
-                    <th>职称</th>
-                    <th>部门</th>
-                    <th>岗位</th>
-                    <th>状态</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {% for obj in queryset %}
-                <tr>
-                    <th>{{ obj.id }}</th>
-                    <td>{{ obj.name }}</td>
-                    <td>{{ obj.get_sex_display}}</td>
-                    <td>{{ obj.age }}</td>
-                    <td>{{ obj.salary }}</td>
-                    <td>{{ obj.degree }}</td>
-                    <td>{{ obj.get_marriage_display }}</td>
-                    <td>{{ obj.create_time|date:"Y-m-d" }}</td>
-                    <td>{{ obj.jobtitle }}</td>
-                    <td>{{ obj.depart.title }}</td>
-                    <td>{{ obj.post }}</td>
-                    <td>{{ obj.get_condition_display}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
         </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>工号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>基础工资</th>
+                <th>学历</th>
+                <th>婚姻状况</th>
+                <th>入职时间</th>
+                <th>职称</th>
+                <th>部门</th>
+                <th>岗位</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in queryset %}
+            <tr>
+                <td>{{ obj.id }}</td>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.get_sex_display}}</td>
+                <td>{{ obj.age }}</td>
+                <td>{{ obj.salary }}</td>
+                <td>{{ obj.degree }}</td>
+                <td>{{ obj.get_marriage_display }}</td>
+                <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                <td>{{ obj.jobtitle }}</td>
+                <td>{{ obj.depart.title }}</td>
+                <td>{{ obj.post }}</td>
+                <td>{{ obj.get_condition_display}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 
 {% endblock %}
