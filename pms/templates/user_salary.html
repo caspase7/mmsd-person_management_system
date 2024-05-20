@@ -1,0 +1,33 @@
+{% extends 'user_layout.html' %}
+
+{% block content %}
+
+ <div class="container">
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <table class="table table-bordered">
+            <tr>
+                <th>月份</th>
+                <th>基础工资</th>
+                <th>奖金</th>
+                <th>扣款</th>
+                <th>总工资</th>
+                <th></th>
+            </tr>
+            {% for entry in monthly_salaries %}
+            <tr>
+                <td>{{ entry.month }}</td>
+                <td>{{ entry.base_salary }}</td>
+                <td>{{ entry.total_rewards }}</td>
+                <td>{{ entry.total_penalties }}</td>
+                <td>{{ entry.total_salary }}</td>
+                <td><a class="btn btn-primary btn-xs" href="/month_details/{{entry.year}}/{{entry.month}}/">查看详情</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        </div>
+    </div>
+
+{% endblock %}

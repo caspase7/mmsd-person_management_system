@@ -1,0 +1,29 @@
+{% extends 'user_layout.html' %}
+
+{% block content %}
+
+ <div class="container">
+
+        <h1>{{ year }}-{{ month }} 奖金和扣款详情</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>时间</th>
+                <th>类型</th>
+                <th>说明</th>
+                <th>金额</th>
+
+            </tr>
+            {% for detail in details %}
+            <tr>
+                <td>{{ detail.time }}</td>
+                <td>{{ detail.isrewards|yesno:"奖金,扣款" }}</td>
+                <td>{{ detail.text }}</td>
+                <td>{{ detail.amount }}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+        <a class="btn btn-primary btn-xs" href="/user/salary/">返回</a>
+        </div>
+
+{% endblock %}
