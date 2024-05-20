@@ -47,21 +47,16 @@ class UserInfo(models.Model):
         db_table = 'person'
 
 
-class Rewards(models.Model):
+class RewardsAndPunishments(models.Model):
     uid = models.ForeignKey(UserInfo, to_field="id", on_delete=models.CASCADE)
-    reward = models.IntegerField(verbose_name="奖金")
+    isrewards = models.BooleanField(verbose_name="是奖金", null=True, blank=True)
+    amount = models.IntegerField(verbose_name="数额")
+    text = models.TextField(verbose_name="说明", null=True)
     time = models.DateTimeField(verbose_name="时间")
 
     class Meta:
-        db_table = 'rewards'
+        db_table = 'rewardsandpunishments'
 
 
-class Punishments(models.Model):
-    uid = models.ForeignKey(UserInfo, to_field="id", on_delete=models.CASCADE)
-    punishment = models.IntegerField(verbose_name="罚款")
-    time = models.DateTimeField(verbose_name="时间")
-
-    class Meta:
-        db_table = 'punishments'
 
 

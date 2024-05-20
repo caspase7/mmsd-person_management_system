@@ -6,7 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-# Create your views here.
+from django.db.models import Sum, Q, Func , Value
+from datetime import datetime
+from django.db.models.functions import ExtractMonth, ExtractYear, Concat
 
 
 def login(request):
@@ -203,6 +205,32 @@ def change_password(request):
 
     return render(request, 'change_password.html')
 
+
+def user_change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        try:
+            user = models.UserInfo.objects.get(id=request.session['user_id'])
+            if user.password == current_password:
+                if new_password == confirm_password:
+                    # 更新用户的新密码
+
+                    user.password = new_password
+                    user.save()  # 保存更改
+
+                    return redirect('/user/list/')
+                else:
+                    return HttpResponse('新密码与确认密码不匹配！')
+            else:
+                return HttpResponse('原密码输入错误！')
+        except models.UserInfo.DoesNotExist:
+            return HttpResponse('用户不存在！')
+
+    return render(request, 'user_change_password.html')
+
 def user_info(request):
     """个人信息"""
 
@@ -231,3 +259,53 @@ def user_info_edit(request):
     models.UserInfo.objects.filter(id=request.session['user_id']).update(name=name, sex=sex, age=age,degree=degree, marriage=marriage)
 
     return redirect("/user/info/")
+
+
+def user_check_salary(request):
+    # 获取用户信息
+    user = models.UserInfo.objects.get(id=request.session['user_id'])
+    base_salary = user.salary
+
+    # 获取奖励和惩罚记录
+    rewards_and_punishments = models.RewardsAndPunishments.objects.filter(uid=request.session['user_id'])
+
+    # 按月汇总
+    salary_summary = rewards_and_punishments.annotate(
+        year=ExtractYear('time'),
+        month=ExtractMonth('time')
+    ).values('year', 'month').annotate(
+        total_rewards=Sum('amount', filter=Q(isrewards=True)),
+        total_penalties=Sum('amount', filter=Q(isrewards=False))
+    ).order_by('year', 'month')
+
+    # 计算每个月的总工资
+    monthly_salaries = []
+    for entry in salary_summary:
+        year = entry['year']
+        month = entry['month']
+        total_rewards = entry['total_rewards'] or 0
+        total_penalties = entry['total_penalties'] or 0
+        total_salary = base_salary + total_rewards - total_penalties
+
+        monthly_salaries.append({
+            'year': year,
+            'month': month,
+            'base_salary': base_salary,
+            'total_rewards': total_rewards,
+            'total_penalties': total_penalties,
+            'total_salary': total_salary
+        })
+
+    return render(request, 'user_salary.html', {'monthly_salaries': monthly_salaries})
+
+
+def month_details(request, year, month):
+    user = request.session.get('user_id')
+    # 获取指定月份的奖励和惩罚记录
+    details = models.RewardsAndPunishments.objects.filter(
+        uid=user,
+        time__year=year,
+        time__month=month
+    )
+
+    return render(request, 'month_details.html', {'details': details, 'year': year, 'month': month})
