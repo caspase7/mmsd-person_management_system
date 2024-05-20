@@ -205,6 +205,32 @@ def change_password(request):
 
     return render(request, 'change_password.html')
 
+
+def user_change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        try:
+            user = models.UserInfo.objects.get(id=request.session['user_id'])
+            if user.password == current_password:
+                if new_password == confirm_password:
+                    # 更新用户的新密码
+
+                    user.password = new_password
+                    user.save()  # 保存更改
+
+                    return redirect('/user/list/')
+                else:
+                    return HttpResponse('新密码与确认密码不匹配！')
+            else:
+                return HttpResponse('原密码输入错误！')
+        except models.UserInfo.DoesNotExist:
+            return HttpResponse('用户不存在！')
+
+    return render(request, 'user_change_password.html')
+
 def user_info(request):
     """个人信息"""
 

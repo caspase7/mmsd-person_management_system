@@ -33,8 +33,10 @@ urlpatterns = [
     path('user/list/all/', views.user_list_all),
     path('user/<str:nid>/edit/', views.user_edit),
     path('change_password/', views.change_password, name='change_password'),
+    path('user/change_password/', views.user_change_password, name='change_password'),
     path('user/info/', views.user_info),
     path('userinfo/edit/', views.user_info_edit),
     path('user/salary/', views.user_check_salary),
     path('month_details/<str:year>/<str:month>/', views.month_details, name='month_details'),
+
 ]
