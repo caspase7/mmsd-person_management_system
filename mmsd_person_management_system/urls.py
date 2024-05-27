@@ -38,5 +38,6 @@ urlpatterns = [
     path('userinfo/edit/', views.user_info_edit),
     path('user/salary/', views.user_check_salary),
     path('month_details/<str:year>/<str:month>/', views.month_details, name='month_details'),
-
+    path('rewards/list/', views.rewards_list),
+    path('rewards/add', views.rewards_add)
 ]

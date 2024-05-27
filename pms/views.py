@@ -93,11 +93,15 @@ def user_list(request):
     """用户管理"""
 
     # 获取所有的用户信息 [obj, obj ……]
-    # queryset = models.UserInfo.objects.all()
-    queryset = models.UserInfo.objects.filter(condition=0)
+    nnid = request.GET.get('nid')
+    if nnid == '1':
+        queryset = models.UserInfo.objects.all()
+        nnid = '0'
+    else:
+        queryset = models.UserInfo.objects.filter(condition=0)
+        nnid = '1'
 
-
-    return render(request, 'user_list.html', {'queryset': queryset})
+    return render(request, 'user_list.html', locals())
 
 
 def user_add(request):
@@ -140,7 +144,6 @@ def user_edit(request, nid):
 
     name = request.POST.get("name")
     sex = request.POST.get("sex")
-    password = request.POST.get("password")
     age = request.POST.get("age")
     salary = request.POST.get("salary")
     degree = request.POST.get("degree")
@@ -150,11 +153,10 @@ def user_edit(request, nid):
     depart = request.POST.get("depart")
     post = request.POST.get("post")
     condition = request.POST.get("condition")
-    limit = request.POST.get("limit")
     # 获取用户提交的标题并修改
-    models.UserInfo.objects.filter(id=nid).update(name=name, sex=sex, password=password, age=age, salary=salary,
+    models.UserInfo.objects.filter(id=nid).update(name=name, sex=sex, age=age, salary=salary,
                                     degree=degree, marriage=marriage, create_time=create_time, jobtitle=jobtitle,
-                                    depart_id=depart, post=post, condition=condition, limit=limit)
+                                    depart_id=depart, post=post, condition=condition)
 
     # 重定向回到部门列表
     return redirect("/user/list/")
@@ -309,3 +311,33 @@ def month_details(request, year, month):
     )
 
     return render(request, 'month_details.html', {'details': details, 'year': year, 'month': month})
+
+def rewards_list(request):
+    """用户管理"""
+
+    # 获取所有的用户信息 [obj, obj ……]
+    # queryset = models.UserInfo.objects.all()
+    queryset = models.RewardsAndPunishments.objects.select_related('uid').order_by('time')
+
+    return render(request, 'rewards_list.html', {'queryset': queryset})
+
+
+def rewards_add(request):
+    """添加部门"""
+    now = datetime.now()
+    ctime = now.strftime("%Y-%m-%dT%H:%M")
+    queryset = models.RewardsAndPunishments.objects.all()
+    if request.method == "GET":
+        return render(request, 'rewards_add.html', locals())
+    # 获取用户POST传过来的数据(暂时不考虑为空的情况)
+    id = request.POST.get("id")
+    isr = request.POST.get("isrewards")
+    amount = request.POST.get("amount")
+    text = request.POST.get("text")
+
+    time = request.POST.get("time")
+
+    # 保存到数据库
+    models.RewardsAndPunishments.objects.create(uid_id=id, isrewards=isr, amount=amount, text=text, time=time)
+    # 重定向回到部门列表
+    return redirect("/rewards/list/")

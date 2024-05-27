@@ -130,7 +130,7 @@ select {
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">新建用户</h3>
+            <h3 class="panel-title">添加</h3>
         </div>
         <div class="panel-body">
             <form method="post">
@@ -140,82 +140,27 @@ select {
                     <input type="text" id="id" class="form-control" placeholder="工号" name="id">
                 </div>
                 <div class="form-group">
-                    <label for="name">姓名</label>
-                    <input type="text" id="name" class="form-control" placeholder="姓名" name="name">
-                </div>
-                <div class="form-group">
-                    <label>性别</label>
+                    <label>性质</label>
                     <div>
-                        <input type="radio" id="male" name="sex" value=0 checked>
-                        <label for="male">男</label>
-                        <input type="radio" id="female" name="sex" value=1>
-                        <label for="female">女</label>
+                        <input type="radio" id="is" name="isrewards" value=True checked>
+                        <label for="is">奖金</label>
+                        <input type="radio" id="not" name="isrewards" value=False>
+                        <label for="not">扣款</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">密码</label>
-                    <input type="text" id="password" class="form-control" placeholder="密码" name="password">
+                    <label for="amount">数额</label>
+                    <input type="text" id="amount" class="form-control" placeholder="数额" name="amount">
                 </div>
                 <div class="form-group">
-                    <label for="age">年龄</label>
-                    <input type="text" id="age" class="form-control" placeholder="年龄" name="age">
+                    <label for="text">说明</label>
+                    <input type="text" id="text" class="form-control" placeholder="说明" name="text">
                 </div>
                 <div class="form-group">
-                    <label for="salary">基础工资</label>
-                    <input type="text" id="salary" class="form-control" placeholder="基础工资" name="salary">
+                    <label for="time">时间</label>
+                    <input type="datetime-local" id="time" class="form-control" name="time" value="{{ ctime }}" min="2000-01-01" max="2050-12-31">
                 </div>
-                <div class="form-group">
-                    <label>学历</label>
-                    <input type="text" class="form-control" placeholder="学历" name="degree">
-                </div>
-                <div class="form-group">
-                    <label>婚姻状况</label>
-                    <div>
-                        <input type="radio" id="single" name="marriage" value=0 checked>
-                        <label for="single">未婚</label>
-                        <input type="radio" id="married" name="marriage" value=1>
-                        <label for="married">已婚</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="create_time">入职时间</label>
-                    <input type="date" id="create_time" class="form-control" name="create_time" value="2024-04-22" min="2000-01-01" max="2050-12-31">
-                </div>
-                <div class="form-group">
-                    <label for="jobtitle">职称</label>
-                    <input type="text" id="jobtitle" class="form-control" placeholder="职称" name="jobtitle">
-                </div>
-                <div class="form-group">
-                    <label>部门</label>
-                        <select name="depart">
-                            {% for obj in queryset %}
-                            <option value='{{ obj.id }}'>{{ obj.title }}</option>
-                            {% endfor %}
-                        </select>
-                </div>
-                <div class="form-group">
-                    <label for="post">岗位</label>
-                    <input type="text" id="post" class="form-control" placeholder="岗位" name="post">
-                </div>
-                <div class="form-group">
-                    <label for="condition">状态</label>
-                    <select id="condition" class="form-control" name="condition">
-                        <option value=0>在职</option>
-                        <option value=1>辞职</option>
-                        <option value=2>辞退</option>
-                        <option value=3>退休</option>
-                        <option value=4>转出</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>权限</label>
-                    <div>
-                        <input type="radio" id="admin" name="limit" value=0>
-                        <label for="admin">管理员</label>
-                        <input type="radio" id="user" name="limit" value=1 checked>
-                        <label for="user">用户</label>
-                    </div>
-                </div>
+
                 <button type="submit" class="btn btn-primary">保 存</button>
             </form>
         </div>
