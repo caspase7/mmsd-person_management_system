@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>工号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>基础工资</th>
+                <th>学历</th>
+                <th>婚姻状况</th>
+                <th>入职时间</th>
+                <th>职称</th>
+                <th>部门</th>
+                <th>岗位</th>
+                <th>状态</th>
+                <th>权限</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.get_sex_display }}</td>
+                    <td>{{ employee.age }}</td>
+                    <td>{{ employee.salary }}</td>
+                    <td>{{ employee.degree }}</td>
+                    <td>{{ employee.get_marriage_display }}</td>
+                    <td>{{ employee.create_time }}</td>
+                    <td>{{ employee.jobtitle }}</td>
+                    <td>{{ employee.depart.title }}</td>
+                    <td>{{ employee.post }}</td>
+                    <td>{{ employee.get_condition_display }}</td>
+                    <td>{{ employee.get_limit_display }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/user/search/">New Search</a>
+    <button id="export-btn">Export to Excel</button>
+
+    <script>
+        document.getElementById('export-btn').addEventListener('click', function() {
+            fetch('/user/search/export_to_excel/')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'employees.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>

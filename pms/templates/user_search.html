@@ -1,0 +1,173 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<head>
+    <title>Employee Search</title>
+    <script>
+        let criteriaIndex = 1;
+        let departmentChoices = {{ department_choices_json|safe }};
+
+        function addCriteria() {
+            let criteriaContainer = document.getElementById('criteria-container');
+            let newCriteria = document.getElementById('criteria-template').content.cloneNode(true);
+            let newIndex = criteriaIndex;
+            newCriteria.querySelector('select').setAttribute('name', `attribute_${newIndex}`);
+            newCriteria.querySelector('.input-container').setAttribute('data-index', newIndex);
+            criteriaContainer.appendChild(newCriteria);
+            criteriaIndex++;
+            document.getElementById('criteria_count').value = criteriaIndex;
+
+            // Preserve existing criteria
+            let existingCriteria = document.querySelectorAll('.input-container');
+            existingCriteria.forEach(container => {
+                let index = container.getAttribute('data-index');
+                let selectElement = container.parentElement.querySelector('select');
+                let selectedValue = selectElement.value;
+                let inputContainer = newCriteria.querySelector('.input-container[data-index="' + index + '"]');
+                inputContainer.innerHTML = container.innerHTML;
+                let newSelectElement = newCriteria.querySelector('.input-container[data-index="' + index + '"] select');
+                newSelectElement.value = selectedValue;
+            });
+        }
+
+        function updateInputFields(selectElement) {
+            let selectedValue = selectElement.value;
+            let inputContainer = selectElement.parentElement.querySelector('.input-container');
+            let index = inputContainer.getAttribute('data-index');
+            inputContainer.innerHTML = '';
+
+            if (selectedValue == 'sex') {
+                inputContainer.innerHTML = `
+                    <select name="sex_${index}">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                `;
+            } else if (selectedValue == 'salary') {
+                inputContainer.innerHTML = `
+                    <select name="salary_operator_${index}">
+                        <option value="gt">大于</option>
+                        <option value="lt">小于</option>
+                        <option value="eq">等于</option>
+                    </select>
+                    <input type="number" step="0.01" name="salary_${index}">
+                `;
+            } else if (selectedValue == 'age') {
+                inputContainer.innerHTML = `
+                    <select name="age_operator_${index}">
+                        <option value="gt">大于</option>
+                        <option value="lt">小于</option>
+                        <option value="eq">等于</option>
+                    </select>
+                    <input type="number" name="age_${index}">
+                `;
+            } else if (selectedValue == 'create_time') {
+                inputContainer.innerHTML = `
+                    <select name="create_time_operator_${index}">
+                        <option value="gt">大于</option>
+                        <option value="lt">小于</option>
+                        <option value="eq">等于</option>
+                    </select>
+                    <input type="date" name="create_time_${index}">
+                `;
+            } else if (selectedValue == 'marriage') {
+                inputContainer.innerHTML = `
+                    <select name="marriage_${index}">
+                        <option value="0">未婚</option>
+                        <option value="1">已婚</option>
+                    </select>
+                `;
+            } else if (selectedValue == 'condition') {
+                inputContainer.innerHTML = `
+                    <select name="condition_${index}">
+                        <option value="0">在职</option>
+                        <option value="1">辞职</option>
+                        <option value="2">辞退</option>
+                        <option value="3">退休</option>
+                        <option value="4">转出</option>
+                    </select>
+                `;
+            } else if (selectedValue == 'limit') {
+                inputContainer.innerHTML = `
+                    <select name="limit_${index}">
+                        <option value="0">admin</option>
+                        <option value="1">user</option>
+                    </select>
+                `;
+            } else if (selectedValue == 'depart') {
+                inputContainer.innerHTML = `
+                    <select name="depart_${index}">
+                        ${departmentChoices.map(department => `<option value="${department[0]}">${department[1]}</option>`).join('')}
+                    </select>
+                `;
+            } else {
+                inputContainer.innerHTML = `<input type="text" name="${selectedValue}_${index}">`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Employee Search</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div id="criteria-container">
+            <div>
+                <select name="attribute_0" onchange="updateInputFields(this)">
+                    <option value="id">工号</option>
+                    <option value="name">姓名</option>
+                    <option value="sex">性别</option>
+                    <option value="age">年龄</option>
+                    <option value="salary">基础工资</option>
+                    <option value="degree">学历</option>
+                    <option value="marriage">婚姻状况</option>
+                    <option value="create_time">入职时间</option>
+                    <option value="jobtitle">职称</option>
+                    <option value="depart">部门</option>
+                    <option value="post">岗位</option>
+                    <option value="condition">状态</option>
+                    <option value="limit">权限</option>
+                </select>
+                <div class="input-container" data-index="0">
+                    <input type="text" name="id_0" value="">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="criteria_count" name="criteria_count" value="1">
+        <button type="button" onclick="addCriteria()">Add Criteria</button>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Template for new criteria -->
+    <template id="criteria-template">
+        <div>
+            <select onchange="updateInputFields(this)">
+                <option value="id">工号</option>
+                <option value="name">姓名</option>
+                <option value="sex">性别</option>
+                <option value="age">年龄</option>
+                <option value="salary">基础工资</option>
+                <option value="degree">学历</option>
+                <option value="marriage">婚姻状况</option>
+                <option value="create_time">入职时间</option>
+                <option value="jobtitle">职称</option>
+                <option value="depart">部门</option>
+                <option value="post">岗位</option>
+                <option value="condition">状态</option>
+                <option value="limit">权限</option>
+            </select>
+            <div class="input-container" data-index="">
+                <input type="text" name="id_1" value="">
+                <!-- Input fields will be dynamically added here -->
+            </div>
+        </div>
+    </template>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let selectElement = document.querySelector('select[name="attribute_0"]');
+        updateInputFields(selectElement);
+    });
+    </script>
+</body>
+
+{% endblock %}
