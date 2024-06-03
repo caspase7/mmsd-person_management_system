@@ -15,7 +15,7 @@
             </tr>
             {% for detail in details %}
             <tr>
-                <td>{{ detail.time }}</td>
+                <td>{{ detail.time|date:"Y年n月j日 H:i" }}</td>
                 <td>{{ detail.isrewards|yesno:"奖金,扣款" }}</td>
                 <td>{{ detail.text }}</td>
                 <td>{{ detail.amount }}</td>

@@ -341,7 +341,6 @@ def rewards_list(request):
 
 
 def rewards_add(request):
-    """添加部门"""
     now = datetime.now()
     ctime = now.strftime("%Y-%m-%dT%H:%M")
     queryset = models.RewardsAndPunishments.objects.all()
@@ -357,5 +356,5 @@ def rewards_add(request):
 
     # 保存到数据库
     models.RewardsAndPunishments.objects.create(uid_id=id, isrewards=isr, amount=amount, text=text, time=time)
-    # 重定向回到部门列表
+
     return redirect("/rewards/list/")
