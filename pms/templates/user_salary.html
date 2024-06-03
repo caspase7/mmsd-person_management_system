@@ -17,11 +17,11 @@
             </tr>
             {% for entry in monthly_salaries %}
             <tr>
-                <td>{{ entry.month }}</td>
-                <td>{{ entry.base_salary }}</td>
-                <td>{{ entry.total_rewards }}</td>
-                <td>{{ entry.total_penalties }}</td>
-                <td>{{ entry.total_salary }}</td>
+                <td>{{ entry.year }}.{{ entry.month }}</td>
+                <td>{{ entry.base_salary|floatformat:2 }}</td>
+                <td>{{ entry.total_rewards|floatformat:2 }}</td>
+                <td>{{ entry.total_penalties|floatformat:2 }}</td>
+                <td>{{ entry.total_salary|floatformat:2 }}</td>
                 <td><a class="btn btn-primary btn-xs" href="/month_details/{{entry.year}}/{{entry.month}}/">查看详情</a></td>
             </tr>
             {% endfor %}

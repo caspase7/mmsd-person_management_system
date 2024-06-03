@@ -263,35 +263,56 @@ def user_info_edit(request):
     return redirect("/user/info/")
 
 
+
+def get_month_range(start_date, end_date):
+    """生成从入职时间到当前时间的所有月份"""
+    current = start_date.replace(day=1)
+    while current <= end_date:
+        yield current
+        next_month = current.month % 12 + 1
+        next_year = current.year + current.month // 12
+        current = current.replace(year=next_year, month=next_month)
+
 def user_check_salary(request):
     # 获取用户信息
     user = models.UserInfo.objects.get(id=request.session['user_id'])
     base_salary = user.salary
 
+    # 获取用户的入职时间
+    hire_date = user.create_time
+    current_date = datetime.now().date()
+
     # 获取奖励和惩罚记录
     rewards_and_punishments = models.RewardsAndPunishments.objects.filter(uid=request.session['user_id'])
 
-    # 按月汇总
+    # 按月汇总并按年份和月份倒序排列
     salary_summary = rewards_and_punishments.annotate(
         year=ExtractYear('time'),
         month=ExtractMonth('time')
     ).values('year', 'month').annotate(
         total_rewards=Sum('amount', filter=Q(isrewards=True)),
         total_penalties=Sum('amount', filter=Q(isrewards=False))
-    ).order_by('year', 'month')
+    ).order_by('-year', '-month')
+
+    # 生成从入职时间到当前时间的所有月份并倒序
+    month_range = list(get_month_range(hire_date, current_date))[::-1]
+
+    # 构建字典以便快速查找
+    summary_dict = {(entry['year'], entry['month']): entry for entry in salary_summary}
 
     # 计算每个月的总工资
     monthly_salaries = []
-    for entry in salary_summary:
-        year = entry['year']
-        month = entry['month']
-        total_rewards = entry['total_rewards'] or 0
-        total_penalties = entry['total_penalties'] or 0
+    for month in month_range:
+        year = month.year
+        month_num = month.month
+        entry = summary_dict.get((year, month_num), {})
+        total_rewards = entry.get('total_rewards', 0) or 0
+        total_penalties = entry.get('total_penalties', 0) or 0
         total_salary = base_salary + total_rewards - total_penalties
 
         monthly_salaries.append({
             'year': year,
-            'month': month,
+            'month': month_num,
             'base_salary': base_salary,
             'total_rewards': total_rewards,
             'total_penalties': total_penalties,
@@ -313,10 +334,7 @@ def month_details(request, year, month):
     return render(request, 'month_details.html', {'details': details, 'year': year, 'month': month})
 
 def rewards_list(request):
-    """用户管理"""
 
-    # 获取所有的用户信息 [obj, obj ……]
-    # queryset = models.UserInfo.objects.all()
     queryset = models.RewardsAndPunishments.objects.select_related('uid').order_by('time')
 
     return render(request, 'rewards_list.html', {'queryset': queryset})
