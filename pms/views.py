@@ -229,7 +229,7 @@ def user_change_password(request):
                     user.password = new_password
                     user.save()  # 保存更改
 
-                    return redirect('/user/list/')
+                    return redirect('/user/info/')
                 else:
                     return HttpResponse('新密码与确认密码不匹配！')
             else:
