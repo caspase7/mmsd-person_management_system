@@ -1,73 +1,142 @@
 {% extends 'user_layout.html' %}
-
+{% load static %}
 {% block content %}
-<script>
-    function initradio(rName,rValue){
-        var rObj = document.getElementsByName(rName);
-        for(var i = 0;i < rObj.length;i++){
-            if(rObj[i].value == rValue){
-                rObj[i].checked =  'checked';
-            }
-        }
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-image: url("{% static 'images/background.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
     }
-    function initselect(rName,rValue){
-        var tesObj = document.getElementById(rName);
-        for(var i=0; i<tesObj.length; i++){
-            if(tesObj.options[i].value == rValue){
-                tesObj.options[i].selected = true;
+
+  .container {
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+
+  .card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+
+  .card-header {
+        background-color: #343a40;
+        color: #fff;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+    }
+
+  .card-body {
+        padding: 15px;
+    }
+
+  .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+  .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+  .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+  .btn-primary:hover {
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+</style>
+
+<script>
+    function initRadio(rName, rValue) {
+        var rObj = document.getElementsByName(rName);
+        for (var i = 0; i < rObj.length; i++) {
+            if (rObj[i].value == rValue) {
+                rObj[i].checked = true;
             }
         }
     }
 </script>
-   <div>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">修改个人信息</h3>
-            </div>
-            <div class="panel-body">
-                <form method="post">
-                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
-                    <div class="form-group">
-                        <label>姓名</label>
-                        <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
-                        <label>性别:</label>
-                        <input type="radio" name="sex" value=0>
-                        <label>男</label>
-                        <input type="radio" name="sex" value=1>
-                        <label>女</label>
-                        <br>
-                            <script>
-                                initradio('sex','{{row_object.sex}}');
-                            </script>
-                        <label>年龄</label>
-                        <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
-                        <br>
-                        <label>学历</label>
-                        <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
-                        <label>婚姻状况</label>
-                        <input type="radio" name="marriage" value=0>
-                        <label>未婚</label>
-                        <input type="radio" name="marriage" value=1>
-                        <label>已婚</label>
-                        <br>
-                            <script>
-                                initradio('marriage','{{row_object.marriage}}');
-                            </script>
-                        <br>
 
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title">修改个人信息</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3 row">
+                    <label for="name" class="col-sm-2 col-form-label">姓名</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" placeholder="姓名" name="name" value="{{ row_object.name }}">
                     </div>
-               <button type="submit" class="btn btn-primary">保 存</button>
-                </form>
-            </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">性别</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sex" id="male" value="0">
+                            <label class="form-check-label" for="male">男</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sex" id="female" value="1">
+                            <label class="form-check-label" for="female">女</label>
+                        </div>
+                        <script>
+                            initRadio('sex', '{{ row_object.sex }}');
+                        </script>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="age" class="col-sm-2 col-form-label">年龄</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="age" placeholder="年龄" name="age" value="{{ row_object.age }}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="degree" class="col-sm-2 col-form-label">学历</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="degree" placeholder="学历" name="degree" value="{{ row_object.degree }}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">婚姻状况</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="marriage" id="single" value="0">
+                            <label class="form-check-label" for="single">未婚</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="marriage" id="married" value="1">
+                            <label class="form-check-label" for="married">已婚</label>
+                        </div>
+                        <script>
+                            initRadio('marriage', '{{ row_object.marriage }}');
+                        </script>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
         </div>
     </div>
-
 </div>
 {% endblock %}
-
-
-
-
-
-

@@ -1,72 +1,83 @@
 {% extends 'layout.html' %}
+{% load static %}
 
 {% block content %}
+<style>
+    body {
+        background-image: url('{% static "images/background.jpg" %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
 
-    <div class="container">
-        <div style="margin-bottom: 10px">
-            <!--跳转并打开新页面-->
-            <a class="btn btn-success" href="/user/add/" target="_blank">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                新建用户
-            </a>
-            <a class="btn btn-primary btn-info" href="/user/list/">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                显示在职员工
-            </a>
-        </div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+<div class="container mt-4">
+    <div class="mb-3 d-flex justify-content-between">
+        <!-- 跳转并打开新页面 -->
+        <a class="btn btn-primary btn-lg" href="/user/add/" target="_blank">
+            <i class="bi bi-plus-circle-fill"></i>
+            新建用户
+        </a>
+        <a class="btn btn-info btn-lg" href="/user/list/">
+            <i class="bi bi-people-fill"></i>
+            显示在职员工
+        </a>
+    </div>
+    <div class="card shadow">
+        <!-- 卡片头部 -->
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-list-ul"></i>
                 用户列表
+            </h4>
+        </div>
+        <!-- 表格内容 -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover custom-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>工号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>密码</th>
+                            <th>年龄</th>
+                            <th>基础工资</th>
+                            <th>学历</th>
+                            <th>婚姻状况</th>
+                            <th>入职时间</th>
+                            <th>职称</th>
+                            <th>部门</th>
+                            <th>岗位</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in queryset %}
+                        <tr>
+                            <td>{{ obj.id }}</td>
+                            <td>{{ obj.name }}</td>
+                            <td>{{ obj.get_sex_display }}</td>
+                            <td>{{ obj.password }}</td>
+                            <td>{{ obj.age }}</td>
+                            <td>{{ obj.salary }}</td>
+                            <td>{{ obj.degree }}</td>
+                            <td>{{ obj.get_marriage_display }}</td>
+                            <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                            <td>{{ obj.jobtitle }}</td>
+                            <td>{{ obj.depart.title }}</td>
+                            <td>{{ obj.post }}</td>
+                            <td>{{ obj.get_condition_display }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="/user/{{ obj.id }}/edit/">编辑</a>
+                                <!-- <a class="btn btn-danger btn-sm" href="#">删除</a> -->
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>工号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>密码</th>
-                    <th>年龄</th>
-                    <th>基础工资</th>
-                    <th>学历</th>
-                    <th>婚姻状况</th>
-                    <th>入职时间</th>
-                    <th>职称</th>
-                    <th>部门</th>
-                    <th>岗位</th>
-                    <th>状态</th>
-                    <th>操作</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {% for obj in queryset %}
-                <tr>
-                    <th>{{ obj.id }}</th>
-                    <td>{{ obj.name }}</td>
-                    <td>{{ obj.get_sex_display}}</td>
-                    <td>{{ obj.password }}</td>
-                    <td>{{ obj.age }}</td>
-                    <td>{{ obj.salary }}</td>
-                    <td>{{ obj.degree }}</td>
-                    <td>{{ obj.get_marriage_display }}</td>
-                    <td>{{ obj.create_time|date:"Y-m-d" }}</td>
-                    <td>{{ obj.jobtitle }}</td>
-                    <td>{{ obj.depart.title }}</td>
-                    <td>{{ obj.post }}</td>
-                    <td>{{ obj.get_condition_display}}</td>
-                    <td>
-                        <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit/">编辑</a>
-                    <!--    <a class="btn btn-danger btn-xs" href="#">删除</a> -->
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
-
+</div>
 {% endblock %}
-
