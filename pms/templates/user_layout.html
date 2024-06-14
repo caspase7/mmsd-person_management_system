@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css' %}">
      <style>
         /* 自定义导航栏样式 */
+        body {
+            background: url('{% static "images/background.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
         .navbar-custom {
             background-color: #bcd0c7; /* 设置导航栏背景颜色为白色 */
             color: #000; /* 设置导航栏文字颜色为黑色 */
