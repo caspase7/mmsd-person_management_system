@@ -33,7 +33,7 @@
             <tbody>
             {% for obj in queryset %}
             <tr>
-                <td>{{ obj.time }}</td>
+                <td>{{ obj.time |date:"Y年n月j日 H:i"}}</td>
                 <td>{{ obj.uid.id }}</td>
                 <td>{{ obj.uid.name }}</td>
                 <td>

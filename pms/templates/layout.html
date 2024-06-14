@@ -3,36 +3,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>人事管理系统</title>
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css' %}">
-     <style>
+    <style>
+        /* 设置页面背景图片 */
+        body {
+            background: url('{% static "images/background.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
         /* 自定义导航栏样式 */
         .navbar-custom {
-            background-color: #bcd0c7; /* 设置导航栏背景颜色为白色 */
+            background-color: rgba(188, 208, 199, 0.9); /* 设置导航栏背景颜色为白色 */
             color: #000; /* 设置导航栏文字颜色为黑色 */
-            border-bottom: 2px solid #c0c0c0; /* Add a border bottom with a color */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 添加阴影效果 */
+            border-bottom: 2px solid #c0c0c0; /* 添加底部边框 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
             padding-left: 20px; /* 调整导航栏左侧内边距 */
         }
         /* 标题部分样式 */
         .navbar-custom .navbar-brand {
             border: 2px solid #D2E0E6; /* 设置标题的边框样式 */
             color: #000000; /* 设置标题文字颜色为白色 */
-            padding:5px 15px; /* 添加内边距 */
+            padding: 5px 15px; /* 添加内边距 */
             border-radius: 20px; /* 添加边框圆角 */
             font-family: cursive; /* 设置字体为 Arial */
-            font-size: 25px;//字号
+            font-size: 25px; /* 设置字号 */
             background-color: transparent; /* 设置背景为透明 */
-            //border: 2px solid transparent; /* 设置边框为透明 */
-            box-shadow: 0 0 10px rgba(0,0,0,0.2); /* 添加边框虚化效果和阴影 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 添加边框虚化效果和阴影 */
         }
-         /* 链接样式 */
+        /* 链接样式 */
         .navbar-custom .nav-link {
             font-family: cursive; /* 设置字体为系统内置的手写字体 */
-            font-size: 18px;//字号
-
+            font-size: 18px; /* 设置字号 */
         }
-         /* 登出链接样式 */
+        /* 登出链接样式 */
         .navbar-custom .logout-link {
             border-radius: 20%; /* 设置圆形背景 */
             background-color: #343a40; /* 设置背景颜色为蓝色 */
@@ -40,16 +46,24 @@
             padding: 3px 10px; /* 添加内边距 */
             margin-left: 10px; /* 添加左侧外边距 */
             margin-top: 5px; /* 调整顶部外边距，使登出框下移 */
-            font-size: 17px;//字号
+            font-size: 17px; /* 设置字号 */
         }
         .custom-spacing {
             margin-right: 20px; /* 设置右边距为30像素 */
+        }
+        /* 设置内容容器的背景和内边距 */
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* 设置内容容器背景颜色，带透明度 */
+            padding: 2rem; /* 添加内边距 */
+            border-radius: 10px; /* 添加圆角 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+            margin-top: 20px; /* 添加顶部外边距 */
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-light navbar-custom"> <!-- 添加了 navbar-custom 类 -->
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-light bg-light navbar-custom">
     <div class="container-fluid">
         <a class="navbar-brand custom-spacing" href="#">人事管理系统</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -74,9 +88,9 @@
         </div>
         <ul class="navbar-nav ml-auto">
             {% if request.session.user_name %}
-             <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="#">{{ request.session.user_name }}</a>
-             </li>
+            </li>
             <li class="nav-item">
                 <a class="nav-link logout-link" href="{% url 'logout' %}">登出</a>
             </li>
@@ -85,7 +99,9 @@
     </div>
 </nav>
 
-{% block content%}{% endblock %}
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
 
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-5.3.3-dist/js/bootstrap.js' %}"></script>

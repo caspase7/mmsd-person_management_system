@@ -6,6 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+# Create your views here.
+from .forms import EmployeeSearchForm
+from .models import UserInfo, Department
+from django.db.models import Q
+import json
+from django.http import HttpResponse
+import pandas as pd
 from django.db.models import Sum, Q, Func , Value
 from datetime import datetime
 from django.db.models.functions import ExtractMonth, ExtractYear, Concat
@@ -181,7 +188,6 @@ def user_list_all(request):
     return render(request, 'user_list_all.html', {'queryset': queryset})
 
 
-
 def change_password(request):
     if request.method == 'POST':
         current_password = request.POST.get('current_password')
@@ -223,7 +229,7 @@ def user_change_password(request):
                     user.password = new_password
                     user.save()  # 保存更改
 
-                    return redirect('/user/list/')
+                    return redirect('/user/info/')
                 else:
                     return HttpResponse('新密码与确认密码不匹配！')
             else:
@@ -358,3 +364,110 @@ def rewards_add(request):
     models.RewardsAndPunishments.objects.create(uid_id=id, isrewards=isr, amount=amount, text=text, time=time)
 
     return redirect("/rewards/list/")
+
+
+def user_search(request):
+    # queryset = models.Department.objects.all()
+    # if request.method == "GET":
+    # return render(request, 'user_search.html', {'queryset': queryset})
+    if request.method == 'POST':
+        form = EmployeeSearchForm(request.POST)
+        employees = UserInfo.objects.all()
+
+        criteria_count = int(request.POST.get('criteria_count', 0))
+        query = Q()
+        for i in range(criteria_count):
+            attribute = request.POST.get(f'attribute_{i}')
+            # print(attribute)
+            if attribute == 'sex':
+                value = request.POST.get(f'sex_{i}')
+                query &= Q(sex=value)
+            elif attribute == 'marriage':
+                value = request.POST.get(f'marriage_{i}')
+                query &= Q(marriage=value)
+            elif attribute == 'condition':
+                value = request.POST.get(f'condition_{i}')
+                query &= Q(condition=value)
+            elif attribute == 'limit':
+                value = request.POST.get(f'limit_{i}')
+                query &= Q(limit=value)
+            elif attribute == 'depart':
+                value = request.POST.get(f'depart_{i}')
+                query &= Q(depart=value)
+            elif attribute == 'salary':
+                operator = request.POST.get(f'salary_operator_{i}')
+                value = request.POST.get(f'salary_{i}')
+                if operator == 'gt':
+                    query &= Q(salary__gt=value)
+                elif operator == 'lt':
+                    query &= Q(salary__lt=value)
+                elif operator == 'eq':
+                    query &= Q(salary=value)
+            elif attribute == 'age':
+                operator = request.POST.get(f'age_operator_{i}')
+                value = request.POST.get(f'age_{i}')
+                if operator == 'gt':
+                    query &= Q(age__gt=value)
+                elif operator == 'lt':
+                    query &= Q(age__lt=value)
+                elif operator == 'eq':
+                    query &= Q(age=value)
+            elif attribute == 'create_time':
+                operator = request.POST.get(f'create_time_operator_{i}')
+                value = request.POST.get(f'create_time_{i}')
+                if operator == 'gt':
+                    query &= Q(create_time__gt=value)
+                elif operator == 'lt':
+                    query &= Q(create_time__lt=value)
+                elif operator == 'eq':
+                    query &= Q(create_time=value)
+            else:
+                value = request.POST.get(f'{attribute}_{i}')
+                if attribute in ['id', 'name', 'jobtitle', 'post', 'degree']:
+                    query &= Q(**{f'{attribute}__icontains': value})
+
+        employees = employees.filter(query)
+        employees_data = []
+        for employee in employees:
+            employee_dict = {
+                'id': employee.id,
+                'name': employee.name,
+                'sex': employee.get_sex_display(),
+                'password': employee.password,
+                'age': employee.age,
+                'salary': float(employee.salary),
+                'degree': employee.degree,
+                'marriage': employee.get_marriage_display(),
+                'create_time': employee.create_time.strftime('%Y-%m-%d'),  # 将日期格式化为字符串
+                'jobtitle': employee.jobtitle,
+                'depart': employee.depart.title if employee.depart else None,  # 如果部门存在，获取部门名称，否则为 None
+                'post': employee.post,
+                'condition': employee.get_condition_display(),
+                'limit': employee.get_limit_display(),
+                # 其他字段...
+            }
+            employees_data.append(employee_dict)
+
+        # 将查询结果存储到 session 中
+        request.session['search_results'] = employees_data
+        # request.session['search_results'] = list(employees.values())  # 将查询结果存储到 session 中
+
+        return render(request, 'result.html', {'employees': employees})
+    else:
+        form = EmployeeSearchForm()
+        departments = Department.objects.all()
+        department_choices = [(dept.id, dept.title) for dept in departments]
+        department_choices_json = json.dumps(department_choices)
+
+    return render(request, 'user_search.html', {'form': form, 'department_choices_json': department_choices_json})
+
+
+def export_to_excel(request):
+    employees = request.session.get('search_results', {})
+    df = pd.DataFrame(employees)
+    print("DataFrame contents:", df)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="employees.xlsx"'
+    df.to_excel(response, index=False)
+    return response
+
