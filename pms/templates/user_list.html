@@ -1,82 +1,142 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<style>
+        .panel-heading {
+        background-color: #337ab7;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+    }
+    .highlight-btn {
+        font-size: 18px; /* 调整字体大小 */
+        padding: 10px 20px; /* 增加内边距 */
+        border-radius: 5px; /* 增加圆角 */
+        font-weight: bold; /* 加粗字体 */
+    }
+    .highlight-btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .highlight-btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+    .highlight-btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+    .status-circle {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    .status-active {
+        background-color: #28a745; /* 绿色 */
+    }
+    .status-resigned {
+        background-color: #ffc107; /* 黄色 */
+    }
+    .status-dismissed {
+        background-color: #dc3545; /* 红色 */
+    }
+    .status-retired {
+        background-color: #6c757d; /* 灰色 */
+    }
+    .status-transferred {
+        background-color: #17a2b8; /* 蓝色 */
+    }
+</style>
 
-    <div class="container">
-        <div style="margin-bottom: 10px">
-            <!--跳转并打开新页面-->
-            <a class="btn btn-success" href="/user/add/" target="_blank">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                新建用户
-            </a>
+<div class="container">
+    <div style="margin-bottom: 10px">
+        <!--跳转并打开新页面-->
+        <a class="btn btn-success highlight-btn highlight-btn-success" href="/user/add/" target="_blank">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            新建用户
+        </a>
 
-            <a class="btn btn-primary btn-info" href="/user/list/?nid={{nnid}}">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                {% if nnid == '1' %}
-                显示所有员工
-                {% else %}
-                显示在职员工
-                {% endif %}
-            </a>
+        <a class="btn btn-primary btn-info highlight-btn highlight-btn-info" href="/user/list/?nid={{nnid}}">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            {% if nnid == '1' %}
+            显示所有员工
+            {% else %}
+            显示在职员工
+            {% endif %}
+        </a>
 
-            <a class="btn btn-success" href="/user/search/" target="_blank">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                查询
-            </a>
-        </div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                用户列表
-            </div>
-
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>工号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>密码</th>
-                    <th>年龄</th>
-                    <th>基础工资</th>
-                    <th>学历</th>
-                    <th>婚姻状况</th>
-                    <th>入职时间</th>
-                    <th>职称</th>
-                    <th>部门</th>
-                    <th>岗位</th>
-                    <th>状态</th>
-                    <th>操作</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {% for obj in queryset %}
-                <tr>
-                    <th>{{ obj.id }}</th>
-                    <td>{{ obj.name }}</td>
-                    <td>{{ obj.get_sex_display}}</td>
-                    <td>{{ obj.password }}</td>
-                    <td>{{ obj.age }}</td>
-                    <td>{{ obj.salary }}</td>
-                    <td>{{ obj.degree }}</td>
-                    <td>{{ obj.get_marriage_display }}</td>
-                    <td>{{ obj.create_time|date:"Y-m-d" }}</td>
-                    <td>{{ obj.jobtitle }}</td>
-                    <td>{{ obj.depart.title }}</td>
-                    <td>{{ obj.post }}</td>
-                    <td>{{ obj.get_condition_display}}</td>
-                    <td>
-                        <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit/">编辑</a>
-                    <!--    <a class="btn btn-danger btn-xs" href="#">删除</a> -->
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <a class="btn btn-warning highlight-btn highlight-btn-warning" href="/user/search/" target="_blank">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            查询
+        </a>
     </div>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            <h1><b>用户列表</b></h1>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>工号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>密码</th>
+                <th>年龄</th>
+                <th>基础工资</th>
+                <th>学历</th>
+                <th>婚姻状况</th>
+                <th>入职时间</th>
+                <th>职称</th>
+                <th>部门</th>
+                <th>岗位</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in queryset %}
+            <tr>
+                <th>{{ obj.id }}</th>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.get_sex_display }}</td>
+                <td>{{ obj.password }}</td>
+                <td>{{ obj.age }}</td>
+                <td>{{ obj.salary }}</td>
+                <td>{{ obj.degree }}</td>
+                <td>{{ obj.get_marriage_display }}</td>
+                <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                <td>{{ obj.jobtitle }}</td>
+                <td>{{ obj.depart.title }}</td>
+                <td>{{ obj.post }}</td>
+                <td>
+                    <span class="status-circle
+                        {% if obj.condition == 0 %}
+                            status-active
+                        {% elif obj.condition == 1 %}
+                            status-resigned
+                        {% elif obj.condition == 2 %}
+                            status-dismissed
+                        {% elif obj.condition == 3 %}
+                            status-retired
+                        {% elif obj.condition == 4 %}
+                            status-transferred
+                        {% endif %}
+                    "></span>{{ obj.get_condition_display }}
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit/">编辑</a>
+                <!--    <a class="btn btn-danger btn-xs" href="#">删除</a> -->
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
-

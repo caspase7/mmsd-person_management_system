@@ -107,67 +107,124 @@
         }
     </script>
 </head>
-<body>
-    <h1>Employee Search</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div id="criteria-container">
-            <div>
-                <select name="attribute_0" onchange="updateInputFields(this)">
-                    <option value="id">工号</option>
-                    <option value="name">姓名</option>
-                    <option value="sex">性别</option>
-                    <option value="age">年龄</option>
-                    <option value="salary">基础工资</option>
-                    <option value="degree">学历</option>
-                    <option value="marriage">婚姻状况</option>
-                    <option value="create_time">入职时间</option>
-                    <option value="jobtitle">职称</option>
-                    <option value="depart">部门</option>
-                    <option value="post">岗位</option>
-                    <option value="condition">状态</option>
-                    <option value="limit">权限</option>
-                </select>
-                <div class="input-container" data-index="0">
-                    <input type="text" name="id_0" value="">
-                </div>
-            </div>
-        </div>
-        <input type="hidden" id="criteria_count" name="criteria_count" value="1">
-        <button type="button" onclick="addCriteria()">Add Criteria</button>
-        <button type="submit">Search</button>
-    </form>
 
-    <!-- Template for new criteria -->
-    <template id="criteria-template">
-        <div>
-            <select onchange="updateInputFields(this)">
-                <option value="id">工号</option>
-                <option value="name">姓名</option>
-                <option value="sex">性别</option>
-                <option value="age">年龄</option>
-                <option value="salary">基础工资</option>
-                <option value="degree">学历</option>
-                <option value="marriage">婚姻状况</option>
-                <option value="create_time">入职时间</option>
-                <option value="jobtitle">职称</option>
-                <option value="depart">部门</option>
-                <option value="post">岗位</option>
-                <option value="condition">状态</option>
-                <option value="limit">权限</option>
-            </select>
-            <div class="input-container" data-index="">
-                <input type="text" name="id_1" value="">
-                <!-- Input fields will be dynamically added here -->
-            </div>
-        </div>
-    </template>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let selectElement = document.querySelector('select[name="attribute_0"]');
-        updateInputFields(selectElement);
-    });
-    </script>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-container {
+        padding: 90px; /* 增加内边距 */
+        text-align: center; /* 将容器内的内容居中 */
+        border: 2px solid #ccc; /* 添加边框 */
+        border-radius: 10px; /* 添加圆角 */
+        background-color: #f9f9f9; /* 添加背景颜色 */
+        padding-bottom: 20px;
+        padding-top: 40px;
+        max-height: 500px; /* 添加固定高度 */
+        overflow-y: auto; /* 启用垂直滚动 */
+    }
+
+    h1 {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    button {
+        margin: 10px 5px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+
+    }
+
+    button {
+        background-color: #ffffff;
+        color: black;
+        cursor: pointer;
+        border-radius: 5px; /* 圆角 */
+    }
+
+    button:hover {
+        border-color: #0a58ca; /* 设置按钮悬停时的边框颜色 */
+        color: #0a58ca; /* 设置按钮悬停时的文字颜色 */
+    }
+</style>
+
+<body>
+
+    <div class="container">
+        <div class="form-container">
+            <h1>员工查询</h1>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <div id="criteria-container">
+                    <div style="display: flex; align-items: center;">
+                        <select name="attribute_0" onchange="updateInputFields(this)">
+                            <option value="id">工号</option>
+                            <option value="name">姓名</option>
+<option value="sex">性别</option>
+<option value="age">年龄</option>
+<option value="salary">基础工资</option>
+<option value="degree">学历</option>
+<option value="marriage">婚姻状况</option>
+<option value="create_time">入职时间</option>
+<option value="jobtitle">职称</option>
+<option value="depart">部门</option>
+<option value="post">岗位</option>
+<option value="condition">状态</option>
+<option value="limit">权限</option>
+</select>
+<div class="input-container" data-index="0">
+    <input type="text" name="id_0" value="">
+    <!-- Input fields will be dynamically added here -->
+</div>
+</div>
+</div>
+<input type="hidden" id="criteria_count" name="criteria_count" value="1">
+<button type="button" onclick="addCriteria()">添加条件</button>
+<button type="submit">查询</button>
+</form>
+</div>
+</div>
+<!-- Template for new criteria -->
+<template id="criteria-template">
+<div style="display: flex; align-items: center;">
+    <select onchange="updateInputFields(this)">
+        <option value="id">工号</option>
+        <option value="name">姓名</option>
+        <option value="sex">性别</option>
+        <option value="age">年龄</option>
+        <option value="salary">基础工资</option>
+        <option value="degree">学历</option>
+        <option value="marriage">婚姻状况</option>
+        <option value="create_time">入职时间</option>
+        <option value="jobtitle">职称</option>
+        <option value="depart">部门</option>
+        <option value="post">岗位</option>
+        <option value="condition">状态</option>
+        <option value="limit">权限</option>
+    </select>
+    <div class="input-container" data-index="">
+        <input type="text" name="id_1" value="">
+        <!-- Input fields will be dynamically added here -->
+    </div>
+</div>
+</template>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let selectElement = document.querySelector('select[name="attribute_0"]');
+    updateInputFields(selectElement);
+});
+</script>
 </body>
 
 {% endblock %}

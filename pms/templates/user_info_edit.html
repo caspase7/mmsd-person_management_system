@@ -1,142 +1,220 @@
 {% extends 'user_layout.html' %}
-{% load static %}
+
 {% block content %}
 <style>
     body {
-        background-color: #f8f9fa;
-        background-image: url("{% static 'images/background.jpg' %}");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, skyblue, lightgreen); /* 设置背景渐变 */
+        margin: 0;
+        padding: 20px;
+        color: #333;
     }
-
-  .container {
-        width: 500px;
+    .container {
+        max-width: 800px;
         margin: 0 auto;
         padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        background: #fff; /* 改为白色背景，确保内容可读性 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
     }
-
-  .card {
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    .panel {
+        border: 1px solid #ddd;
+        border-radius: 4px;
     }
-
-  .card-header {
-        background-color: #343a40;
+    .panel-primary {
+        border-color: #337ab7;
+    }
+    .panel-heading {
+        background-color: #337ab7;
         color: #fff;
-        padding: 15px;
-        border-radius: 5px 5px 0 0;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
     }
-
-  .card-body {
+    .panel-title {
+        margin: 0;
+        font-size: 28px;
+        text-align: center;  /*水平居中*/
+    }
+    .panel-body {
         padding: 15px;
     }
-
-  .form-control {
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-control {
+        display: block;
         width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ced4da;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     }
-
-  .form-control:focus {
-        border-color: #80bdff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    .form-control:focus {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
     }
-
-  .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
+    .btn {
+        display: inline-block;
         padding: 10px 20px;
-        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
         cursor: pointer;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+    .btn-primary:hover {
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    input[type="text"] {
+        border: 2px solid #000000; /* 设置输入框的边框 */
+        border-radius: 10px; /* 设置输入框的圆角 */
+        padding: 10px; /* 设置输入框的内边距 */
     }
 
-  .btn-primary:hover {
-        background-color: #0069d9;
-        border-color: #0062cc;
+    input[type="text"]:hover {
+        border-color:#4CAF50; /* 设置输入框悬停时的边框颜色 */
+    }
+    input[type="radio"] {
+        width:auto;
+        display:inherit;
+        font-size: 16px;
+        vertical-align: middle;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        white-space:nowrap;
+        line-height: normal;
+    }
+    select {
+        width: 90%; /* 设置宽度 */
+        padding: 10px; /* 内边距 */
+        border: 1px solid #ccc; /* 边框 */
+        border-radius: 4px; /* 圆角 */
+        background-color: #fff; /* 背景颜色 */
+        font-size: 16px; /* 字体大小 */
+        color: #333; /* 字体颜色 */
+        -webkit-appearance: none; /* 移除默认样式 (WebKit) */
+        -moz-appearance: none; /* 移除默认样式 (Mozilla) */
+        appearance: none; /* 移除默认样式 */
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 viewBox%3D%270 0 4 5%27%3E%3Cpath fill%3D%27%23000%27 d%3D%27M2 0L0 2h4zM2 5L0 3h4z%27/%3E%3C/svg%3E'), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Arrow_down_font_awesome.svg/1024px-Arrow_down_font_awesome.svg.png'); /* 自定义箭头 */
+        background-repeat: no-repeat, no-repeat; /* 不重复背景图片 */
+        background-position: right 10px top 50%, right 10px top 50%; /* 调整背景图片位置 */
+        background-size: 10px 10px, 20px 20px; /* 调整背景图片大小 */
+        padding-right: 30px; /* 调整右内边距，以便给箭头留出空间 */
+    }
+
+    /* 样式修改 */
+    select:focus {
+        border-color: #66afe9; /* 聚焦时边框颜色 */
+        box-shadow: 0 0 5px rgba(102, 175, 233, 0.6); /* 聚焦时阴影 */
+        outline: none; /* 移除默认聚焦样式 */
+    }
+
+    .radio-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-group label {
+        margin-left: 5px;
+        margin-right: 15px;
     }
 </style>
-
 <script>
-    function initRadio(rName, rValue) {
+    function initradio(rName,rValue){
         var rObj = document.getElementsByName(rName);
-        for (var i = 0; i < rObj.length; i++) {
-            if (rObj[i].value == rValue) {
-                rObj[i].checked = true;
+        for(var i = 0;i < rObj.length;i++){
+            if(rObj[i].value == rValue){
+                rObj[i].checked =  'checked';
+            }
+        }
+    }
+    function initselect(rName,rValue){
+        var tesObj = document.getElementById(rName);
+        for(var i=0; i<tesObj.length; i++){
+            if(tesObj.options[i].value == rValue){
+                tesObj.options[i].selected = true;
             }
         }
     }
 </script>
+   <div>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">修改个人信息</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %} <!--使用post方法必须要写这个，不然报错403-->
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
+                        <br>
+                        <label>性别:</label>
+                        <div class="radio-group">
+                            <input type="radio" name="sex" value="0"><label>男</label>
+                            <input type="radio" name="sex" value="1"><label>女</label>
+                        </div>
+                        <br>
+                            <script>
+                                initradio('sex','{{row_object.sex}}');
+                            </script>
+                        <label>年龄</label>
+                        <input type="text" class="form-control" placeholder="年龄" name="age" value="{{ row_object.age }}">
+                        <br>
+                        <label>学历</label>
+                        <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
+                        <br>
+                        <label>婚姻状况</label>
+                        <div class="radio-group">
+                            <input type="radio" name="marriage" value="0"><label>未婚</label>
+                            <input type="radio" name="marriage" value="1"><label>已婚</label>
+                        </div>
+                        <br>
+                            <script>
+                                initradio('marriage','{{row_object.marriage}}');
+                            </script>
+                        <br>
 
-<div class="container mt-5">
-    <div class="card shadow p-4">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">修改个人信息</h3>
-        </div>
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                <div class="mb-3 row">
-                    <label for="name" class="col-sm-2 col-form-label">姓名</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" placeholder="姓名" name="name" value="{{ row_object.name }}">
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">性别</label>
-                    <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="sex" id="male" value="0">
-                            <label class="form-check-label" for="male">男</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="sex" id="female" value="1">
-                            <label class="form-check-label" for="female">女</label>
-                        </div>
-                        <script>
-                            initRadio('sex', '{{ row_object.sex }}');
-                        </script>
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="age" class="col-sm-2 col-form-label">年龄</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="age" placeholder="年龄" name="age" value="{{ row_object.age }}">
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="degree" class="col-sm-2 col-form-label">学历</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="degree" placeholder="学历" name="degree" value="{{ row_object.degree }}">
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">婚姻状况</label>
-                    <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="marriage" id="single" value="0">
-                            <label class="form-check-label" for="single">未婚</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="marriage" id="married" value="1">
-                            <label class="form-check-label" for="married">已婚</label>
-                        </div>
-                        <script>
-                            initRadio('marriage', '{{ row_object.marriage }}');
-                        </script>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">保存</button>
-                </div>
-            </form>
+               <button type="submit" class="btn btn-primary">保 存</button>
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
+
+
+
+
+
+
