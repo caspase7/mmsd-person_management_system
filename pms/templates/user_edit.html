@@ -1,6 +1,151 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, skyblue, lightgreen); /* 设置背景渐变 */
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff; /* 改为白色背景，确保内容可读性 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .panel {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .panel-primary {
+        border-color: #337ab7;
+    }
+    .panel-heading {
+        background-color: #337ab7;
+        color: #fff;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+    .panel-title {
+        margin: 0;
+        font-size: 28px;
+        text-align: center;  /*水平居中*/
+    }
+    .panel-body {
+        padding: 15px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+    .form-control:focus {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+    .btn-primary:hover {
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    input[type="text"] {
+        border: 2px solid #000000; /* 设置输入框的边框 */
+        border-radius: 10px; /* 设置输入框的圆角 */
+        padding: 10px; /* 设置输入框的内边距 */
+    }
+
+    input[type="text"]:hover {
+        border-color:#4CAF50; /* 设置输入框悬停时的边框颜色 */
+    }
+    input[type="radio"] {
+        width:auto;
+        display:inherit;
+        font-size: 16px;
+        vertical-align: middle;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        white-space:nowrap;
+        line-height: normal;
+    }
+    select {
+        width: 90%; /* 设置宽度 */
+        padding: 10px; /* 内边距 */
+        border: 1px solid #ccc; /* 边框 */
+        border-radius: 4px; /* 圆角 */
+        background-color: #fff; /* 背景颜色 */
+        font-size: 16px; /* 字体大小 */
+        color: #333; /* 字体颜色 */
+        -webkit-appearance: none; /* 移除默认样式 (WebKit) */
+        -moz-appearance: none; /* 移除默认样式 (Mozilla) */
+        appearance: none; /* 移除默认样式 */
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%27http%3A//www.w3.org/2000/svg%27 viewBox%3D%270 0 4 5%27%3E%3Cpath fill%3D%27%23000%27 d%3D%27M2 0L0 2h4zM2 5L0 3h4z%27/%3E%3C/svg%3E'), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Arrow_down_font_awesome.svg/1024px-Arrow_down_font_awesome.svg.png'); /* 自定义箭头 */
+        background-repeat: no-repeat, no-repeat; /* 不重复背景图片 */
+        background-position: right 10px top 50%, right 10px top 50%; /* 调整背景图片位置 */
+        background-size: 10px 10px, 20px 20px; /* 调整背景图片大小 */
+        padding-right: 30px; /* 调整右内边距，以便给箭头留出空间 */
+    }
+
+    /* 样式修改 */
+    select:focus {
+        border-color: #66afe9; /* 聚焦时边框颜色 */
+        box-shadow: 0 0 5px rgba(102, 175, 233, 0.6); /* 聚焦时阴影 */
+        outline: none; /* 移除默认聚焦样式 */
+    }
+
+    .radio-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-group label {
+        margin-left: 5px;
+        margin-right: 15px;
+    }
+</style>
 <script>
     function initradio(rName,rValue){
         var rObj = document.getElementsByName(rName);
@@ -19,7 +164,7 @@
         }
     }
 </script>
-   <div>
+<div>
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -34,14 +179,13 @@
                         <label>姓名</label>
                         <input type="text" class="form-control" placeholder="姓名" name="name" value="{{ row_object.name }}">
                         <label>性别:</label>
-                        <input type="radio" name="sex" value=0>
-                        <label>男</label>
-                        <input type="radio" name="sex" value=1>
-                        <label>女</label>
-                        <br>
-                            <script>
-                                initradio('sex','{{row_object.sex}}');
-                            </script>
+                        <div class="radio-group">
+                            <input type="radio" name="sex" value="0"><label>男</label>
+                            <input type="radio" name="sex" value="1"><label>女</label>
+                        </div>
+                        <script>
+                            initradio('sex','{{row_object.sex}}');
+                        </script>
                         <label>密码</label>
                         <input type="text" disabled="disabled" class="form-control" placeholder="密码" name="password" value="{{ row_object.password }}">
                         <label>年龄</label>
@@ -51,17 +195,15 @@
                         <label>学历</label>
                         <input type="text" class="form-control" placeholder="学历" name="degree" value="{{ row_object.degree }}">
                         <label>婚姻状况</label>
-                        <input type="radio" name="marriage" value=0>
-                        <label>未婚</label>
-                        <input type="radio" name="marriage" value=1>
-                        <label>已婚</label>
-                        <br>
-                            <script>
-                                initradio('marriage','{{row_object.marriage}}');
-                            </script>
+                        <div class="radio-group">
+                            <input type="radio" name="marriage" value="0"><label>未婚</label>
+                            <input type="radio" name="marriage" value="1"><label>已婚</label>
+                        </div>
+                        <script>
+                            initradio('marriage','{{row_object.marriage}}');
+                        </script>
                         <label>入职时间</label>
                         <input type="date" id="Date" name="create_time" min="2000-01-01" max="2050-12-31" value="{{ ctime }}">
-                        <br>
                         <label>职称</label>
                         <input type="text" class="form-control" placeholder="职称" name="jobtitle" value="{{ row_object.jobtitle }}">
                         <label>部门</label>
@@ -70,45 +212,35 @@
                             <option value='{{ obj.id }}'>{{ obj.title }}</option>
                             {% endfor %}
                         </select>
-                        <br>
-                            <script>
-                                initselect('depart','{{row_object.depart.id}}');
-                            </script>
+                        <script>
+                            initselect('depart','{{row_object.depart.id}}');
+                        </script>
                         <label>岗位</label>
                         <input type="text" class="form-control" placeholder="岗位" name="post" value="{{ row_object.post }}">
                         <label>状态</label>
                         <select id="condition" name="condition">
-                            <option value=0>在职</option>
-                            <option value=1>辞职</option>
-                            <option value=2>辞退</option>
-                            <option value=3>退休</option>
-                            <option value=4>转出</option>
+                            <option value="0">在职</option>
+                            <option value="1">辞职</option>
+                            <option value="2">辞退</option>
+                            <option value="3">退休</option>
+                            <option value="4">转出</option>
                         </select>
-                        <br>
-                            <script>
-                                initselect('condition','{{row_object.condition}}');
-                            </script>
+                        <script>
+                            initselect('condition','{{row_object.condition}}');
+                        </script>
                         <label>权限</label>
-                        <input type="radio" disabled="disabled" name="limit" value=0 >
-                        <label>管理员</label>
-                        <input type="radio" disabled="disabled" name="limit" value=1 >
-                        <label>用户</label>
-                        <br>
-                            <script>
-                                initradio('limit','{{row_object.limit}}');
-                            </script>
+                        <div class="radio-group">
+                            <input type="radio" disabled="disabled" name="limit" value="0"><label>管理员</label>
+                            <input type="radio" disabled="disabled" name="limit" value="1"><label>用户</label>
+                        </div>
+                        <script>
+                            initradio('limit','{{row_object.limit}}');
+                        </script>
                     </div>
-               <button type="submit" class="btn btn-primary">保 存</button>
+                    <button type="submit" class="btn btn-primary">保 存</button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}
-
-
-
-
-
-
