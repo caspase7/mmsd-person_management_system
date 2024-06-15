@@ -3,16 +3,15 @@
 {% block content %}
 
 <div class="container">
-    <div style="margin-bottom: 100px">
-        <!--跳转并打开新页面-->
-        <br> </br>
-        <a class="btn btn-success custom-btn" href="/rewards/add" target="_blank">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <!-- 跳转并打开新页面 -->
+        <a class="btn btn-success custom-btn" href="/rewards/add" target="_blank" style="font-size: 1.0em; padding: 10px 20px;">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
             添加
         </a>
     </div>
     <div class="panel panel-default">
-        <!-- Default panel contents -->
+        <!-- 默认面板内容 -->
         <div class="panel-heading">
             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
             <strong>奖惩列表</strong>
@@ -27,7 +26,6 @@
                 <th>性质</th>
                 <th>数额</th>
                 <th>说明</th>
-
             </tr>
             </thead>
             <tbody>
@@ -38,19 +36,36 @@
                 <td>{{ obj.uid.name }}</td>
                 <td>
                     {% if obj.isrewards %}
-                        奖金
+                        <span class="dot dot-reward"></span> 奖金
                     {% else %}
-                        扣款
+                        <span class="dot dot-penalty"></span> 扣款
                     {% endif %}
                 </td>
                 <td>{{ obj.amount }}</td>
                 <td>{{ obj.text }}</td>
-
-
             </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<style>
+/* 圆点的样式 */
+.dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-reward {
+    background-color: green;
+}
+
+.dot-penalty {
+    background-color: red;
+}
+</style>
+
 {% endblock %}
