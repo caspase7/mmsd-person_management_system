@@ -52,6 +52,13 @@
         .custom-spacing {
             margin-right: 20px; /* 设置右边距为30像素 */
         }
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* 设置内容容器背景颜色，带透明度 */
+            padding: 2rem; /* 添加内边距 */
+            border-radius: 10px; /* 添加圆角 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+            margin-top: 20px; /* 添加顶部外边距 */
+        }
     </style>
 </head>
 <body>
@@ -89,7 +96,9 @@
     </div>
 </nav>
 
-{% block content%}{% endblock %}
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
 
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-5.3.3-dist/js/bootstrap.js' %}"></script>
